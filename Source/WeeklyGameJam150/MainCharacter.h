@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "MainCharacter.generated.h"
 
+class AGrave;
+
 UCLASS()
 class WEEKLYGAMEJAM150_API AMainCharacter : public ACharacter
 {
@@ -42,6 +44,8 @@ private:
 	UPROPERTY(EditAnywhere)
 	float MaxMovementSpeed = 100.f;
 
+	TArray<AGrave*> DiggableGraves;
+
 	// ----------Custom Functions----------
 public:
 
@@ -49,6 +53,11 @@ protected:
 private:
 	void MoveForward(float AxisValue);
 	void MoveRight(float AxisValue);
+	void SelectObject();
 	FVector GetNormalizedXYProjectedLine(FVector InputVector);
 
+	UFUNCTION()
+	void ActorBeginOverlap(AActor* OverlappedActor, AActor* OtherActor);
+	UFUNCTION()
+	void ActorEndOverlap(AActor* OverlappedActor, AActor* OtherActor);
 };

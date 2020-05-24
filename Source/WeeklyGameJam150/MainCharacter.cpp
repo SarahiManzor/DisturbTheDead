@@ -8,6 +8,9 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "GameFramework/PlayerController.h" 
+#include "Grave.h" 
+
 // Sets default values
 AMainCharacter::AMainCharacter()
 {
@@ -47,7 +50,9 @@ AMainCharacter::AMainCharacter()
 void AMainCharacter::BeginPlay()
 {
 	Super::BeginPlay();
-	UE_LOG(LogTemp, Warning, TEXT("BeginPlay"));
+
+	OnActorBeginOverlap.AddDynamic(this, &AMainCharacter::ActorBeginOverlap);
+	OnActorEndOverlap.AddDynamic(this, &AMainCharacter::ActorEndOverlap);
 }
 
 // Called every frame
@@ -65,6 +70,7 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	UE_LOG(LogTemp, Warning, TEXT("Setup player input"));
 	PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &AMainCharacter::MoveForward);
 	PlayerInputComponent->BindAxis(TEXT("MoveRight"), this, &AMainCharacter::MoveRight);
+	PlayerInputComponent->BindAction(TEXT("LeftClick"), IE_Pressed, this, &AMainCharacter::SelectObject);
 
 }
 
@@ -92,6 +98,61 @@ void AMainCharacter::MoveRight(float AxisValue)
 	}
 
 	AddMovementInput(GetNormalizedXYProjectedLine(TopDownCameraComponent->GetRightVector()), AxisValue * MaxMovementSpeed);
+}
+
+void AMainCharacter::SelectObject()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Selecting"));
+	APlayerController* PC = Cast<APlayerController>(GetController());
+	if (PC)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Player controller found"));
+		FVector2D MousePos;
+		PC->GetMousePosition(MousePos.X, MousePos.Y);
+		FHitResult Hit;
+		PC->GetHitResultAtScreenPosition(MousePos, ECC_GameTraceChannel2, true, Hit);
+		if (Hit.GetActor())
+		{
+			AGrave* Grave = Cast<AGrave>(Hit.GetActor()); // Todo: Make another class that handles generic interaction
+			if (Grave && DiggableGraves.Contains(Grave))
+			{
+				UE_LOG(LogTemp, Warning, TEXT("Hit grave"));
+				float Loot;
+				if (Grave->Dig(Loot))
+				{
+					// Todo: Do something with the loot
+				}
+			}
+		}
+	}
+}
+
+void AMainCharacter::ActorBeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
+{
+	//UE_LOG(LogTemp, Warning, TEXT("Begin overlapped: %s"), *OverlappedActor->GetName());
+	UE_LOG(LogTemp, Warning, TEXT("Begin other: %s"), *OtherActor->GetName());
+
+	AGrave* Grave = Cast<AGrave>(OtherActor);
+	if (Grave)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Grave found: %s"), *Grave->GetName());
+		DiggableGraves.Add(Grave);
+	}
+}
+
+void AMainCharacter::ActorEndOverlap(AActor* OverlappedActor, AActor* OtherActor)
+{
+	//UE_LOG(LogTemp, Warning, TEXT("End overlapped: %s"), *OverlappedActor->GetName());
+	UE_LOG(LogTemp, Warning, TEXT("End other!!: %s"), *OtherActor->GetName());
+
+	AGrave* Grave = Cast<AGrave>(OtherActor);
+	if (Grave)
+	{
+		if (DiggableGraves.Contains(Grave))
+		{
+			DiggableGraves.Remove(Grave);
+		}
+	}
 }
 
 FVector AMainCharacter::GetNormalizedXYProjectedLine(FVector InputVector)
