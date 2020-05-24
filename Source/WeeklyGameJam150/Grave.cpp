@@ -6,6 +6,7 @@
 #include "Engine/World.h"
 #include "Enemy.h"
 #include "Components/BoxComponent.h"
+#include "Components/StaticMeshComponent.h"
 
 // Sets default values
 AGrave::AGrave()
@@ -13,8 +14,14 @@ AGrave::AGrave()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	Mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
-	Mesh->SetupAttachment(GetRootComponent());
+	DirtMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("DirtMesh"));
+	DirtMesh->SetupAttachment(GetRootComponent());
+
+	CoffinBaseMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CoffinBaseMesh"));
+	CoffinBaseMesh->SetupAttachment(GetRootComponent());
+
+	CoffinLidMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CoffinLidMesh"));
+	CoffinLidMesh->SetupAttachment(GetRootComponent());
 
 	InteractCollider = CreateDefaultSubobject<UBoxComponent>(TEXT("InteractCollider"));
 	InteractCollider->SetupAttachment(GetRootComponent());
@@ -60,6 +67,9 @@ bool AGrave::Dig(float &OutValue)
 		SpawnGhost();
 		OutValue = Value;
 		InteractCollider->SetRelativeLocation(InteractCollider->GetRelativeLocation() + FVector::UpVector * InteractCollider->GetRelativeLocation() * -2.f);
+		CoffinBaseMesh->SetRelativeLocation(CoffinBaseMesh->GetRelativeLocation() + FVector::UpVector * 75.f);
+		CoffinLidMesh->SetRelativeLocation(CoffinLidMesh->GetRelativeLocation() + FVector::UpVector * 75.f);
+		CoffinLidMesh->SetRelativeRotation(FRotator(0.f, 10.f, 0.f));
 		return true;
 	}
 

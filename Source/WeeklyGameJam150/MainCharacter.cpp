@@ -109,14 +109,31 @@ void AMainCharacter::SelectObject()
 		UE_LOG(LogTemp, Warning, TEXT("Player controller found"));
 		FVector2D MousePos;
 		PC->GetMousePosition(MousePos.X, MousePos.Y);
+
+		/*int32 ViewPortSizeX;
+		int32 ViewPortSizeY;
+		PC->GetViewportSize(ViewPortSizeX, ViewPortSizeY);
+		FVector2D ScreenLocation(ViewPortSizeX * MousePos.X, ViewPortSizeY * MousePos.Y);
+
+		FVector WorldLocation;
+		FVector LookDirection;
+		PC->DeprojectScreenPositionToWorld(ScreenLocation.X, ScreenLocation.Y, WorldLocation, LookDirection);*/
+
 		FHitResult Hit;
+		//GetWorld()->LineTraceSingleByChannel(Hit, TopDownCameraComponent->GetComponentLocation(), TopDownCameraComponent->GetComponentLocation() + LookDirection * 1000.f, ECC_GameTraceChannel2);
+		
 		PC->GetHitResultAtScreenPosition(MousePos, ECC_GameTraceChannel2, true, Hit);
 		if (Hit.GetActor())
 		{
+			UE_LOG(LogTemp, Warning, TEXT("Hit %s"), *Hit.GetActor()->GetName());
 			AGrave* Grave = Cast<AGrave>(Hit.GetActor()); // Todo: Make another class that handles generic interaction
-			if (Grave && DiggableGraves.Contains(Grave))
+			if (Grave)
 			{
 				UE_LOG(LogTemp, Warning, TEXT("Hit grave"));
+			}
+			if (Grave && DiggableGraves.Contains(Grave))
+			{
+				UE_LOG(LogTemp, Warning, TEXT("Is diggable"));
 				float Loot;
 				if (Grave->Dig(Loot))
 				{

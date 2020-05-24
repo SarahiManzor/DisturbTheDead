@@ -38,9 +38,14 @@ private:
 	UPROPERTY(EditAnywhere)
 	float MovementSpeed = 50.f;
 
+	float LockedZ;
+
+	bool bIsChasing = false;
+
 // ----------Custom Functions----------
 public:
 protected:
 private:
+	void StartChase();
 
 };

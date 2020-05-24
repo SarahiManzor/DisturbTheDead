@@ -7,6 +7,7 @@
 #include "GameFramework/PlayerController.h"
 #include "Kismet/KismetMathLibrary.h"
 #include "GameFramework/CharacterMovementComponent.h" 
+#include "TimerManager.h"
 
 // Sets default values
 AEnemy::AEnemy()
@@ -39,6 +40,11 @@ void AEnemy::BeginPlay()
 		Player = Cast<AMainCharacter>(Pawn);
 	}
 	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Flying);
+
+	LockedZ = GetActorLocation().Z;
+
+	FTimerHandle TimerHandle;
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AEnemy::StartChase, 1.f, false, 1.f);
 }
 
 // Called every frame
@@ -48,11 +54,15 @@ void AEnemy::Tick(float DeltaTime)
 
 	if (Player)
 	{
-		FVector PlayerLocation = Player->GetActorLocation();
-		FVector Target = PlayerLocation - GetActorLocation();
-		Target.Normalize();
-		//AddActorWorldOffset(Target * MovementSpeed * DeltaTime);
-		AddMovementInput(Target, MovementSpeed);
+		if (bIsChasing)
+		{
+			FVector PlayerLocation = Player->GetActorLocation();
+			FVector Target = PlayerLocation - GetActorLocation();
+			Target.Normalize();
+			//AddActorWorldOffset(Target * MovementSpeed * DeltaTime);
+			AddMovementInput(Target, MovementSpeed);
+			SetActorLocation(FVector(GetActorLocation().X, GetActorLocation().Y, LockedZ));
+		}
 	}
 	else
 	{
@@ -66,5 +76,10 @@ void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
 
+}
+
+void AEnemy::StartChase()
+{
+	bIsChasing = true;
 }
 
