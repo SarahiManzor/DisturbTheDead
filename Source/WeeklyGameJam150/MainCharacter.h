@@ -46,8 +46,16 @@ private:
 
 	TArray<AGrave*> DiggableGraves;
 
+	int TotalCollected = 0;
+	bool bIsAlive = true;
+
 	// ----------Custom Functions----------
 public:
+	UFUNCTION(BlueprintPure)
+	FORCEINLINE int GetTotalCollected() { return TotalCollected; }
+	
+	UFUNCTION(BlueprintPure)
+	FORCEINLINE bool IsAlive() { return bIsAlive; }
 
 protected:
 private:

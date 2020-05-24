@@ -10,6 +10,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "GameFramework/PlayerController.h" 
 #include "Grave.h" 
+#include "Enemy.h" 
 
 // Sets default values
 AMainCharacter::AMainCharacter()
@@ -134,10 +135,11 @@ void AMainCharacter::SelectObject()
 			if (Grave && DiggableGraves.Contains(Grave))
 			{
 				UE_LOG(LogTemp, Warning, TEXT("Is diggable"));
-				float Loot;
-				if (Grave->Dig(Loot))
+
+				if (Grave->Dig())
 				{
 					// Todo: Do something with the loot
+					TotalCollected += 1;
 				}
 			}
 		}
@@ -154,6 +156,13 @@ void AMainCharacter::ActorBeginOverlap(AActor* OverlappedActor, AActor* OtherAct
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Grave found: %s"), *Grave->GetName());
 		DiggableGraves.Add(Grave);
+		return;
+	}
+
+	AEnemy* Enemy = Cast<AEnemy>(OtherActor);
+	if (Enemy)
+	{
+		bIsAlive = false;
 	}
 }
 
