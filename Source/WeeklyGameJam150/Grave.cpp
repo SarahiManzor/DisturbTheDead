@@ -59,18 +59,18 @@ void AGrave::Tick(float DeltaTime)
 
 }
 
-bool AGrave::Dig(float &OutValue)
+bool AGrave::Dig()
 {
 	Health--;
 	if (Health == 0)
 	{
 		SpawnGhost();
-		OutValue = Value;
+		bSpawning = true;
 		InteractCollider->SetRelativeLocation(InteractCollider->GetRelativeLocation() + FVector::UpVector * InteractCollider->GetRelativeLocation() * -2.f);
 		CoffinBaseMesh->SetRelativeLocation(CoffinBaseMesh->GetRelativeLocation() + FVector::UpVector * 75.f);
 		CoffinLidMesh->SetRelativeLocation(CoffinLidMesh->GetRelativeLocation() + FVector::UpVector * 75.f);
 		CoffinLidMesh->SetRelativeRotation(FRotator(0.f, 10.f, 0.f));
-		return true;
+		return bHasTreasure;
 	}
 
 	return false;

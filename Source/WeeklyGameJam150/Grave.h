@@ -54,15 +54,17 @@ private:
 	FVector GhostSpawnPoint = FVector::ZeroVector;
 
 	UPROPERTY(EditAnywhere, Category = "Grave")
-	float Value = 0.f;
+	bool bHasTreasure = false;
 
 	float Health = 1.f;
+
+	bool bSpawning = false;
 
 	// ----------Custom Functions----------
 public:
 	// Reduces health of grave and returns value if health hits zero
 	// also calls ghost spawn
-	bool Dig(float &OutValue);
+	bool Dig();
 
 	// Spawns ghost at GhostSpawnPoint
 	void SpawnGhost();

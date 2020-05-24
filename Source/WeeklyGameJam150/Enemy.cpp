@@ -44,7 +44,8 @@ void AEnemy::BeginPlay()
 	LockedZ = GetActorLocation().Z;
 
 	FTimerHandle TimerHandle;
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AEnemy::StartChase, 1.f, false, 1.f);
+	//GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AEnemy::StartChase, 1.f, false, 1.f);
+	bIsChasing = true;
 }
 
 // Called every frame
