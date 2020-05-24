@@ -3,12 +3,12 @@
 using UnrealBuildTool;
 using System.Collections.Generic;
 
-public class DisturbTheDeadEditorTarget : TargetRules
+public class WeeklyGameJam150EditorTarget : TargetRules
 {
-	public DisturbTheDeadEditorTarget(TargetInfo Target) : base(Target)
+	public WeeklyGameJam150EditorTarget( TargetInfo Target) : base(Target)
 	{
 		Type = TargetType.Editor;
 		DefaultBuildSettings = BuildSettingsVersion.V2;
-		ExtraModuleNames.Add("DisturbTheDead");
+		ExtraModuleNames.AddRange( new string[] { "WeeklyGameJam150" } );
 	}
 }

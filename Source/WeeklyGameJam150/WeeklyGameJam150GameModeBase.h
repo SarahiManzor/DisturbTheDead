@@ -4,16 +4,14 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
-#include "DisturbTheDeadGameMode.generated.h"
+#include "WeeklyGameJam150GameModeBase.generated.h"
 
-UCLASS(minimalapi)
-class ADisturbTheDeadGameMode : public AGameModeBase
+/**
+ * 
+ */
+UCLASS()
+class WEEKLYGAMEJAM150_API AWeeklyGameJam150GameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
-
-public:
-	ADisturbTheDeadGameMode();
+	
 };
-
-
-
