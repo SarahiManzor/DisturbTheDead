@@ -8,6 +8,7 @@
 
 class USkeletalMeshComponent;
 class AEnemy;
+class UBoxComponent;
 
 UCLASS()
 class WEEKLYGAMEJAM150_API AGrave : public AActor
@@ -30,17 +31,32 @@ public:
 public:
 protected:
 private:
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, Category = "Grave")
 	USkeletalMeshComponent* Mesh;
 
-	UPROPERTY(EditDefaultsOnly)	
+	UPROPERTY(EditDefaultsOnly, Category = "Grave")
 	TSubclassOf<AEnemy> Ghost;
 
-	UPROPERTY(EditAnywhere, meta = (MakeEditWidget = "true"))
+	UPROPERTY(VisibleAnywhere, Category = "Grave")
+	UBoxComponent* InteractCollider;
+
+	UPROPERTY(VisibleAnywhere, Category = "Grave")
+	UBoxComponent* RangeCollider;
+
+	UPROPERTY(EditAnywhere, Category = "Grave", meta = (MakeEditWidget = "true"))
 	FVector GhostSpawnPoint = FVector::ZeroVector;
+
+	float Value = 0.f;
+	float Health = 1.f;
 
 	// ----------Custom Functions----------
 public:
+	// Reduces health of grave and returns value if health hits zero
+	// also calls ghost spawn
+	bool Dig(float &OutValue);
+
+	// Spawns ghost at GhostSpawnPoint
+	void SpawnGhost();
 protected:
 private:
 
