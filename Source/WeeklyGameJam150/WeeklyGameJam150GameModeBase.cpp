@@ -20,7 +20,7 @@ void AWeeklyGameJam150GameModeBase::BeginPlay()
 void AWeeklyGameJam150GameModeBase::Tick(float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
-	UE_LOG(LogTemp, Warning, TEXT("TickTick"));
+	//UE_LOG(LogTemp, Warning, TEXT("TickTick"));
 
 	if (!Player)
 	{

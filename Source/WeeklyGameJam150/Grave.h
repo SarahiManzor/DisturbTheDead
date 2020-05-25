@@ -56,9 +56,19 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Grave")
 	bool bHasTreasure = false;
 
-	float Health = 1.f;
+	float BaseHealth = 1.f;
+	float Health;
+
+	float BaseRiseDelta = 75.f;
+	float TargetRiseDelta;
+
+	UPROPERTY(EditAnywhere)
+	float RiseSpeed = 1.f;
 
 	bool bSpawning = false;
+
+	// Spawns ghost at GhostSpawnPoint
+	AEnemy* SpawnGhost();
 
 	// ----------Custom Functions----------
 public:
@@ -66,8 +76,8 @@ public:
 	// also calls ghost spawn
 	bool Dig(AEnemy* &SpawnedEnemy);
 
-	// Spawns ghost at GhostSpawnPoint
-	AEnemy* SpawnGhost();
+	void Bury();
+
 protected:
 private:
 

@@ -64,6 +64,9 @@ void ADoor::ComponentBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* O
 	{
 		bIsOpen = false;
 		// Update player ui?
+		FVector CheckPointLocation = CloseDoorTrigger->GetComponentLocation();
+		CheckPointLocation.Z = Player->GetActorLocation().Z;;
+		Player->HitCheckPoint(CheckPointLocation);
 	}
 }
 

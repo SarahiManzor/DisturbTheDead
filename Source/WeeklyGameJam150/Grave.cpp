@@ -50,12 +50,22 @@ void AGrave::BeginPlay()
 	{
 		GhostSpawnPoint = GetActorLocation();
 	}	
+	Health = BaseHealth;
+	TargetRiseDelta = BaseRiseDelta;
 }
 
 // Called every frame
 void AGrave::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+	if (Health == 0 && TargetRiseDelta > 0)
+	{
+		float Rise = TargetRiseDelta * DeltaTime * RiseSpeed;
+		TargetRiseDelta -= Rise;
+		CoffinBaseMesh->SetRelativeLocation(CoffinBaseMesh->GetRelativeLocation() + FVector::UpVector * Rise);
+		CoffinLidMesh->SetRelativeLocation(CoffinLidMesh->GetRelativeLocation() + FVector::UpVector * Rise);
+		CoffinLidMesh->SetRelativeRotation(FRotator(0.f, 10.f * ((BaseRiseDelta - TargetRiseDelta) / BaseRiseDelta), 0.f));
+	}
 
 }
 
@@ -65,11 +75,9 @@ bool AGrave::Dig(AEnemy* &SpawnedEnemy)
 	if (Health == 0)
 	{
 		SpawnedEnemy = SpawnGhost();
+		SpawnedEnemy->SetHomeGrave(this);
 		bSpawning = true;
-		InteractCollider->SetRelativeLocation(InteractCollider->GetRelativeLocation() + FVector::UpVector * InteractCollider->GetRelativeLocation() * -2.f);
-		CoffinBaseMesh->SetRelativeLocation(CoffinBaseMesh->GetRelativeLocation() + FVector::UpVector * 75.f);
-		CoffinLidMesh->SetRelativeLocation(CoffinLidMesh->GetRelativeLocation() + FVector::UpVector * 75.f);
-		CoffinLidMesh->SetRelativeRotation(FRotator(0.f, 10.f, 0.f));
+		InteractCollider->SetRelativeLocation(InteractCollider->GetRelativeLocation() + FVector::UpVector * 50.f);
 		return bHasTreasure;
 	}
 
@@ -84,5 +92,15 @@ AEnemy* AGrave::SpawnGhost()
 		return Enemy;
 	}
 	return nullptr;
+}
+
+void AGrave::Bury()
+{
+	Health = BaseHealth;
+	InteractCollider->SetRelativeLocation(InteractCollider->GetRelativeLocation() + FVector::UpVector * -50.f);
+	CoffinBaseMesh->SetRelativeLocation(CoffinBaseMesh->GetRelativeLocation() - FVector::UpVector * (75.f - TargetRiseDelta));
+	CoffinLidMesh->SetRelativeLocation(CoffinLidMesh->GetRelativeLocation() - FVector::UpVector * (75.f - TargetRiseDelta));
+	CoffinLidMesh->SetRelativeRotation(FRotator(0.f, 0.f, 0.f));
+	TargetRiseDelta = BaseRiseDelta;
 }
 

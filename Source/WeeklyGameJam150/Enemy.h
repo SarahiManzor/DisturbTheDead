@@ -7,6 +7,7 @@
 #include "Enemy.generated.h"
 
 class AMainCharacter;
+class AGrave;
 
 UCLASS()
 class WEEKLYGAMEJAM150_API AEnemy : public ACharacter
@@ -42,9 +43,14 @@ private:
 
 	bool bIsChasing = false;
 
+	AGrave* HomeGrave;
+
 // ----------Custom Functions----------
 public:
 	void Kill();
+	void ResetGrave();
+	
+	void SetHomeGrave(AGrave* Grave);
 protected:
 private:
 	void StartChase();

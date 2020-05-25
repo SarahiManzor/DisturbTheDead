@@ -8,6 +8,8 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "GameFramework/CharacterMovementComponent.h" 
 #include "TimerManager.h"
+#include "Grave.h"
+#include "Components/CapsuleComponent.h"
 
 // Sets default values
 AEnemy::AEnemy()
@@ -27,13 +29,15 @@ AEnemy::AEnemy()
 	GetCharacterMovement()->bConstrainToPlane = true;
 	GetCharacterMovement()->bSnapToPlaneAtStart = true;
 	GetCharacterMovement()->bRunPhysicsWithNoController = true;
-
 }
 
 // Called when the game starts or when spawned
 void AEnemy::BeginPlay()
 {
 	Super::BeginPlay();
+
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
 	APawn* Pawn = GetWorld()->GetFirstPlayerController()->GetPawn();
 	if (Pawn)
 	{
@@ -44,8 +48,7 @@ void AEnemy::BeginPlay()
 	LockedZ = GetActorLocation().Z;
 
 	FTimerHandle TimerHandle;
-	//GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AEnemy::StartChase, 1.f, false, 1.f);
-	bIsChasing = true;
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AEnemy::StartChase, 1.f, false, 1.f);
 }
 
 // Called every frame
@@ -82,11 +85,28 @@ void AEnemy::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 void AEnemy::StartChase()
 {
 	bIsChasing = true;
+
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 }
 
 void AEnemy::Kill()
 {
 	bIsChasing = false;
 	GetMovementComponent()->Velocity = FVector::ZeroVector;
+	GetWorld()->GetTimerManager().ClearAllTimersForObject(this);
+}
+
+void AEnemy::ResetGrave()
+{
+	if (HomeGrave)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Reset grave"));
+		HomeGrave->Bury();
+	}
+}
+
+void AEnemy::SetHomeGrave(AGrave* Grave)
+{
+	HomeGrave = Grave;
 }
 

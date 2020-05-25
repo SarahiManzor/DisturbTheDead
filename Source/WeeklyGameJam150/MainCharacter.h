@@ -49,6 +49,11 @@ private:
 
 	int TotalCollected = 0;
 	bool bIsAlive = true;
+	bool bBeatLevel = false;
+
+	FVector CheckpointLocation = FVector::ZeroVector;
+
+	TArray<AEnemy*> EnemyList;
 
 	// ----------Custom Functions----------
 public:
@@ -59,6 +64,8 @@ public:
 	FORCEINLINE bool IsAlive() { return bIsAlive; }
 
 	void ResetForNextLevel();
+
+	void HitCheckPoint(FVector CheckPoint);
 
 protected:
 private:
@@ -72,5 +79,12 @@ private:
 	UFUNCTION()
 	void ActorEndOverlap(AActor* OverlappedActor, AActor* OtherActor);
 
-	TArray<AEnemy*> EnemyList;
+	UFUNCTION()
+	void StartRestart();
+
+	UFUNCTION()
+	void ResetLocation();
+
+	UFUNCTION()
+	void ClearProgress();
 };

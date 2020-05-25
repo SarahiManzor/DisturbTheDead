@@ -11,6 +11,7 @@
 #include "GameFramework/PlayerController.h" 
 #include "Grave.h" 
 #include "Enemy.h" 
+#include "TimerManager.h"
 
 // Sets default values
 AMainCharacter::AMainCharacter()
@@ -54,6 +55,8 @@ void AMainCharacter::BeginPlay()
 
 	OnActorBeginOverlap.AddDynamic(this, &AMainCharacter::ActorBeginOverlap);
 	OnActorEndOverlap.AddDynamic(this, &AMainCharacter::ActorEndOverlap);
+
+	CheckpointLocation = GetActorLocation();
 }
 
 // Called every frame
@@ -77,7 +80,8 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 void AMainCharacter::MoveForward(float AxisValue)
 {
-	if (AxisValue == 0.0f) return;
+	if (AxisValue == 0.0f || !bIsAlive) return;
+	//UE_LOG(LogTemp, Warning, TEXT("Missing forward: %f"), AxisValue);
 
 	if (!TopDownCameraComponent)
 	{
@@ -90,7 +94,8 @@ void AMainCharacter::MoveForward(float AxisValue)
 
 void AMainCharacter::MoveRight(float AxisValue)
 {
-	if (AxisValue == 0.0f) return;
+	if (AxisValue == 0.0f || !bIsAlive) return;
+	//UE_LOG(LogTemp, Warning, TEXT("Missing forward: %f"), AxisValue);
 
 	if (!TopDownCameraComponent)
 	{
@@ -105,7 +110,7 @@ void AMainCharacter::SelectObject()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Selecting"));
 	APlayerController* PC = Cast<APlayerController>(GetController());
-	if (PC)
+	if (PC && bIsAlive && !bBeatLevel)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Player controller found"));
 		FVector2D MousePos;
@@ -162,10 +167,33 @@ void AMainCharacter::ActorBeginOverlap(AActor* OverlappedActor, AActor* OtherAct
 	}
 
 	AEnemy* Enemy = Cast<AEnemy>(OtherActor);
-	if (Enemy)
+	if (Enemy && bIsAlive && !bBeatLevel)
 	{
 		bIsAlive = false;
+		GetWorld()->GetFirstPlayerController()->PlayerCameraManager->StartCameraFade(0.f, 1.f, 1.5f, FLinearColor::Black, false, true);
+		FTimerHandle TimerHandle;
+		GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AMainCharacter::StartRestart, 2.f, false, 2.f);
 	}
+}
+
+void AMainCharacter::StartRestart()
+{
+	SetActorLocation(CheckpointLocation);
+	ClearProgress();
+	FTimerHandle TimerHandle;
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AMainCharacter::ResetLocation, 1.f, false, 1.f);
+}
+
+void AMainCharacter::ResetLocation()
+{
+	GetWorld()->GetFirstPlayerController()->PlayerCameraManager->StartCameraFade(1.f, 0.f, 1.5f, FLinearColor::Black);
+	bIsAlive = true;
+}
+
+void AMainCharacter::HitCheckPoint(FVector CheckPoint)
+{
+	CheckpointLocation = CheckPoint;
+	bBeatLevel = false;
 }
 
 void AMainCharacter::ActorEndOverlap(AActor* OverlappedActor, AActor* OtherActor)
@@ -197,6 +225,21 @@ void AMainCharacter::ResetForNextLevel()
 	{
 		Enemy->Kill();
 	}
+	EnemyList.Empty();
+
+	TotalCollected = 0;
+	bBeatLevel = true;
+}
+
+void AMainCharacter::ClearProgress()
+{
+	for (AEnemy* Enemy : EnemyList)
+	{
+		Enemy->ResetGrave();
+		Enemy->Destroy();
+	}
+	EnemyList.Empty();
+
 
 	TotalCollected = 0;
 }
