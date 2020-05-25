@@ -34,6 +34,9 @@ public:
 public:
 protected:
 private:
+	UPROPERTY(EditAnywhere)
+	UParticleSystem* SpawnParticles;
+
 	AMainCharacter* Player;
 
 	UPROPERTY(EditAnywhere)

@@ -12,6 +12,8 @@
 #include "Grave.h" 
 #include "Enemy.h" 
 #include "TimerManager.h"
+#include "Kismet/GameplayStatics.h"
+#include "WeeklyGameJam150GameModeBase.h"
 
 // Sets default values
 AMainCharacter::AMainCharacter()
@@ -110,7 +112,7 @@ void AMainCharacter::SelectObject()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Selecting"));
 	APlayerController* PC = Cast<APlayerController>(GetController());
-	if (PC && bIsAlive && !bBeatLevel)
+	if (PC && bIsAlive)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Player controller found"));
 		FVector2D MousePos;
@@ -167,7 +169,7 @@ void AMainCharacter::ActorBeginOverlap(AActor* OverlappedActor, AActor* OtherAct
 	}
 
 	AEnemy* Enemy = Cast<AEnemy>(OtherActor);
-	if (Enemy && bIsAlive && !bBeatLevel)
+	if (Enemy && bIsAlive)
 	{
 		bIsAlive = false;
 		GetWorld()->GetFirstPlayerController()->PlayerCameraManager->StartCameraFade(0.f, 1.f, 1.5f, FLinearColor::Black, false, true);
@@ -193,7 +195,12 @@ void AMainCharacter::ResetLocation()
 void AMainCharacter::HitCheckPoint(FVector CheckPoint)
 {
 	CheckpointLocation = CheckPoint;
-	bBeatLevel = false;
+	AWeeklyGameJam150GameModeBase* GameMode = Cast<AWeeklyGameJam150GameModeBase>(UGameplayStatics::GetGameMode(this));
+	if (GameMode)
+	{
+		GameMode->NextLevel();
+	}
+	ResetForNextLevel();
 }
 
 void AMainCharacter::ActorEndOverlap(AActor* OverlappedActor, AActor* OtherActor)
@@ -228,7 +235,6 @@ void AMainCharacter::ResetForNextLevel()
 	EnemyList.Empty();
 
 	TotalCollected = 0;
-	bBeatLevel = true;
 }
 
 void AMainCharacter::ClearProgress()

@@ -49,7 +49,6 @@ private:
 
 	int TotalCollected = 0;
 	bool bIsAlive = true;
-	bool bBeatLevel = false;
 
 	FVector CheckpointLocation = FVector::ZeroVector;
 

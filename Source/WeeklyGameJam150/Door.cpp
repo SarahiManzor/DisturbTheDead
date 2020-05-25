@@ -60,7 +60,7 @@ void ADoor::Tick(float DeltaTime)
 void ADoor::ComponentBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
 {
 	AMainCharacter* Player = Cast<AMainCharacter>(OtherActor);
-	if (Player)
+	if (Player && bIsOpen)
 	{
 		bIsOpen = false;
 		// Update player ui?

@@ -10,6 +10,7 @@
 #include "TimerManager.h"
 #include "Grave.h"
 #include "Components/CapsuleComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AEnemy::AEnemy()
@@ -46,6 +47,13 @@ void AEnemy::BeginPlay()
 	GetCharacterMovement()->SetMovementMode(EMovementMode::MOVE_Flying);
 
 	LockedZ = GetActorLocation().Z;
+
+	if (SpawnParticles)
+	{
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), SpawnParticles, GetActorLocation(), FRotator(0.0f));
+	}
+
+	SetActorScale3D(FVector::ZeroVector);
 
 	FTimerHandle TimerHandle;
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AEnemy::StartChase, 1.f, false, 1.f);
@@ -87,6 +95,7 @@ void AEnemy::StartChase()
 	bIsChasing = true;
 
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	SetActorScale3D(FVector::OneVector);
 }
 
 void AEnemy::Kill()
@@ -94,6 +103,7 @@ void AEnemy::Kill()
 	bIsChasing = false;
 	GetMovementComponent()->Velocity = FVector::ZeroVector;
 	GetWorld()->GetTimerManager().ClearAllTimersForObject(this);
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 }
 
 void AEnemy::ResetGrave()

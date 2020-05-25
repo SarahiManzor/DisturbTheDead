@@ -39,7 +39,7 @@ private:
 	UStaticMeshComponent* CoffinBaseMesh;
 
 	UPROPERTY(VisibleAnywhere, Category = "Grave")
-		UStaticMeshComponent* CoffinLidMesh;
+	UStaticMeshComponent* CoffinLidMesh;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Grave")
 	TSubclassOf<AEnemy> Ghost;

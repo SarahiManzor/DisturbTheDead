@@ -48,10 +48,11 @@ protected:
 private:
 	AMainCharacter* Player;
 
-	int CurrentLevel = 1;
+	int CurrentLevel = 0;
 
 	// ----------Custom Functions----------
 public:
+	FORCEINLINE void NextLevel() { CurrentLevel ++; }
 protected:
 private:
 	void TrySetPlayer();
