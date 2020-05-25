@@ -88,7 +88,7 @@ AEnemy* AGrave::SpawnGhost()
 {
 	if (Ghost)
 	{
-		AEnemy* Enemy = GetWorld()->SpawnActor<AEnemy>(Ghost, GetActorLocation() + GetActorRotation().RotateVector(GhostSpawnPoint), FRotator::ZeroRotator);
+		AEnemy* Enemy = GetWorld()->SpawnActor<AEnemy>(Ghost, GetSpawnLocation(), FRotator::ZeroRotator);
 		return Enemy;
 	}
 	return nullptr;
@@ -102,5 +102,15 @@ void AGrave::Bury()
 	CoffinLidMesh->SetRelativeLocation(CoffinLidMesh->GetRelativeLocation() - FVector::UpVector * (75.f - TargetRiseDelta));
 	CoffinLidMesh->SetRelativeRotation(FRotator(0.f, 0.f, 0.f));
 	TargetRiseDelta = BaseRiseDelta;
+	bSpawning = false;
 }
 
+void AGrave::SetHighlight_Implementation(bool NewHighlight)
+{
+	UE_LOG(LogTemp, Warning, TEXT("SetHighlightImplementation"));
+}
+
+FVector AGrave::GetSpawnLocation()
+{
+	return GetActorLocation() + GetActorRotation().RotateVector(GhostSpawnPoint);
+}

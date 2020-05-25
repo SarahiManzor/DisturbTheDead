@@ -31,7 +31,7 @@ void AWeeklyGameJam150GameModeBase::Tick(float DeltaSeconds)
 		if (Levels.Num() > CurrentLevel && Player->GetTotalCollected() >= Levels[CurrentLevel].TreasureToWin)
 		{
 			// Todo: Proceed to next level / Open door or something / Reset Ghosts
-			Levels[CurrentLevel].DoorToNextLevel->OpenDoor();
+			Levels[CurrentLevel].DoorToNextLevel->SetDoorOpen(true);
 		}
 	}
 }
@@ -50,5 +50,14 @@ void AWeeklyGameJam150GameModeBase::TrySetPlayer()
 				Player = MainPlayer;
 			}
 		}
+	}
+}
+
+void AWeeklyGameJam150GameModeBase::FailLevel()
+{
+	if (Levels.Num() > CurrentLevel)
+	{
+		// Todo: Proceed to next level / Open door or something / Reset Ghosts
+		Levels[CurrentLevel].DoorToNextLevel->SetDoorOpen(false);
 	}
 }

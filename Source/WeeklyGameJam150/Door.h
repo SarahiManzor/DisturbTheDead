@@ -64,7 +64,7 @@ private:
 
 	// ----------Custom Functions----------
 public:
-	void OpenDoor();
+	void SetDoorOpen(bool NewOpen);
 protected:
 private:
 	UFUNCTION()

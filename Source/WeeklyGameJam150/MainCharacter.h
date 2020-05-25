@@ -41,6 +41,8 @@ public:
 
 protected:
 private:
+	FRotator StartRotation;
+
 	// Movement speed in m/sec
 	UPROPERTY(EditAnywhere)
 	float MaxMovementSpeed = 100.f;
@@ -49,6 +51,7 @@ private:
 
 	int TotalCollected = 0;
 	bool bIsAlive = true;
+	bool bIsDigging = false;
 
 	FVector CheckpointLocation = FVector::ZeroVector;
 
@@ -66,6 +69,12 @@ public:
 
 	void HitCheckPoint(FVector CheckPoint);
 
+	UFUNCTION()
+	FORCEINLINE bool GetIsDigging() { return bIsDigging; }
+
+	UFUNCTION()
+	FORCEINLINE bool GetIsAlive() { return bIsAlive; }
+
 protected:
 private:
 	void MoveForward(float AxisValue);
@@ -82,8 +91,11 @@ private:
 	void StartRestart();
 
 	UFUNCTION()
-	void ResetLocation();
+	void FadeCameraIn();
 
 	UFUNCTION()
 	void ClearProgress();
+
+	UFUNCTION()
+	void FinishedDigging();
 };

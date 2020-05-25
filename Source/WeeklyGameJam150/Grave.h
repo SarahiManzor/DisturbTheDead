@@ -30,10 +30,10 @@ public:
 
 	// ----------Variables----------
 public:
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Grave")
+	USkeletalMeshComponent* DirtMesh;
 protected:
 private:
-	UPROPERTY(VisibleAnywhere, Category = "Grave")
-	USkeletalMeshComponent* DirtMesh;
 
 	UPROPERTY(VisibleAnywhere, Category = "Grave")
 	UStaticMeshComponent* CoffinBaseMesh;
@@ -77,6 +77,14 @@ public:
 	bool Dig(AEnemy* &SpawnedEnemy);
 
 	void Bury();
+
+	UFUNCTION(BlueprintNativeEvent)
+	void SetHighlight(bool NewHighlight);
+
+	UFUNCTION(BlueprintPure)
+	FORCEINLINE bool IsSpawned() { return bSpawning; }
+
+	FVector GetSpawnLocation();
 
 protected:
 private:

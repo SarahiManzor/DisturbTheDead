@@ -5,6 +5,7 @@
 #include "Components/InputComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/CapsuleComponent.h"
+#include "Components/StaticMeshComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -59,6 +60,7 @@ void AMainCharacter::BeginPlay()
 	OnActorEndOverlap.AddDynamic(this, &AMainCharacter::ActorEndOverlap);
 
 	CheckpointLocation = GetActorLocation();
+	StartRotation = GetActorRotation();
 }
 
 // Called every frame
@@ -82,7 +84,7 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 
 void AMainCharacter::MoveForward(float AxisValue)
 {
-	if (AxisValue == 0.0f || !bIsAlive) return;
+	if (AxisValue == 0.0f || !bIsAlive || bIsDigging) return;
 	//UE_LOG(LogTemp, Warning, TEXT("Missing forward: %f"), AxisValue);
 
 	if (!TopDownCameraComponent)
@@ -96,7 +98,7 @@ void AMainCharacter::MoveForward(float AxisValue)
 
 void AMainCharacter::MoveRight(float AxisValue)
 {
-	if (AxisValue == 0.0f || !bIsAlive) return;
+	if (AxisValue == 0.0f || !bIsAlive || bIsDigging) return;
 	//UE_LOG(LogTemp, Warning, TEXT("Missing forward: %f"), AxisValue);
 
 	if (!TopDownCameraComponent)
@@ -149,6 +151,16 @@ void AMainCharacter::SelectObject()
 					// Todo: Do something with the loot
 					TotalCollected += 1;
 					EnemyList.Add(SpawnedEnemy);
+					Grave->SetHighlight(false);
+					bIsDigging = true;
+
+					FRotator LookAtRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Grave->GetSpawnLocation());
+					LookAtRotation.Pitch = 0.f;
+					GetCharacterMovement()->Velocity = FVector::ZeroVector;
+					SetActorRotation(LookAtRotation);
+
+					FTimerHandle TimerHandle;
+					GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AMainCharacter::FinishedDigging, .5f, false, .5f);					
 				}
 			}
 		}
@@ -165,6 +177,8 @@ void AMainCharacter::ActorBeginOverlap(AActor* OverlappedActor, AActor* OtherAct
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Grave found: %s"), *Grave->GetName());
 		DiggableGraves.Add(Grave);
+		if (!Grave->IsSpawned())
+			Grave->SetHighlight(true);
 		return;
 	}
 
@@ -181,15 +195,18 @@ void AMainCharacter::ActorBeginOverlap(AActor* OverlappedActor, AActor* OtherAct
 void AMainCharacter::StartRestart()
 {
 	SetActorLocation(CheckpointLocation);
+	SetActorRotation(StartRotation);
 	ClearProgress();
+	bIsAlive = true;
+	bIsDigging = false;
+
 	FTimerHandle TimerHandle;
-	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AMainCharacter::ResetLocation, 1.f, false, 1.f);
+	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AMainCharacter::FadeCameraIn, 1.f, false, 1.f);
 }
 
-void AMainCharacter::ResetLocation()
+void AMainCharacter::FadeCameraIn()
 {
 	GetWorld()->GetFirstPlayerController()->PlayerCameraManager->StartCameraFade(1.f, 0.f, 1.5f, FLinearColor::Black);
-	bIsAlive = true;
 }
 
 void AMainCharacter::HitCheckPoint(FVector CheckPoint)
@@ -213,6 +230,7 @@ void AMainCharacter::ActorEndOverlap(AActor* OverlappedActor, AActor* OtherActor
 	{
 		if (DiggableGraves.Contains(Grave))
 		{
+			Grave->SetHighlight(false);
 			DiggableGraves.Remove(Grave);
 		}
 	}
@@ -246,6 +264,16 @@ void AMainCharacter::ClearProgress()
 	}
 	EnemyList.Empty();
 
+	AWeeklyGameJam150GameModeBase* GameMode = Cast<AWeeklyGameJam150GameModeBase>(UGameplayStatics::GetGameMode(this));
+	if (GameMode)
+	{
+		GameMode->FailLevel();
+	}
 
 	TotalCollected = 0;
+}
+
+void AMainCharacter::FinishedDigging()
+{
+	bIsDigging = false;
 }

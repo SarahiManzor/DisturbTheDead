@@ -53,6 +53,8 @@ private:
 	// ----------Custom Functions----------
 public:
 	FORCEINLINE void NextLevel() { CurrentLevel ++; }
+
+	void FailLevel();
 protected:
 private:
 	void TrySetPlayer();

@@ -29,6 +29,12 @@ public:
 	bool bIsInAir;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Movement")
+	bool bIsAlive = true;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Movement")
+	bool bIsDigging;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Movement")
 	APawn* Pawn;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Movement")

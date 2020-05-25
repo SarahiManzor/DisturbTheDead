@@ -70,9 +70,9 @@ void ADoor::ComponentBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* O
 	}
 }
 
-void ADoor::OpenDoor()
+void ADoor::SetDoorOpen(bool NewOpen)
 {
-	bIsOpen = true;
-	UE_LOG(LogTemp, Warning, TEXT("Door %i opened!"), DoorID);
+	bIsOpen = NewOpen;
+	UE_LOG(LogTemp, Warning, TEXT("Door %i %s"), DoorID, bIsOpen ? "Open" : "Closed");
 }
 

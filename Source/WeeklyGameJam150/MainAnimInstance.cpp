@@ -32,4 +32,10 @@ void UMainAnimInstance::UpdateAnimationProperties()
 	{
 		Main = Cast<AMainCharacter>(Pawn);
 	}
+
+	if (Main)
+	{
+		bIsDigging = Main->GetIsDigging();
+		bIsAlive = Main->GetIsAlive();
+	}
 }
