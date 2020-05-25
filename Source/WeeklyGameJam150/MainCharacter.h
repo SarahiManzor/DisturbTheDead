@@ -58,7 +58,7 @@ public:
 	UFUNCTION(BlueprintPure)
 	FORCEINLINE bool IsAlive() { return bIsAlive; }
 
-	void KillAllEnemys();
+	void ResetForNextLevel();
 
 protected:
 private:

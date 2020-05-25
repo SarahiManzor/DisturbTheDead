@@ -33,6 +33,7 @@ void AWeeklyGameJam150GameModeBase::Tick(float DeltaSeconds)
 			// Todo: Proceed to next level / Open door or something / Reset Ghosts
 			Levels[CurrentLevel].DoorToNextLevel->OpenDoor();
 			CurrentLevel++;
+			Player->ResetForNextLevel();
 		}
 	}
 }

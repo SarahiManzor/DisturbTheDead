@@ -6,6 +6,9 @@
 #include "Math/UnrealMathUtility.h" 
 #include "WeeklyGameJam150GameModeBase.h"
 #include "Kismet/GameplayStatics.h"
+#include "Components/BoxComponent.h"
+#include "Components/PrimitiveComponent.h"
+#include "MainCharacter.h"
 
 // Sets default values
 ADoor::ADoor()
@@ -19,6 +22,9 @@ ADoor::ADoor()
 	DoorMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DoorMesh"));
 	DoorMesh->SetupAttachment(DoorFrameMesh);
 
+	CloseDoorTrigger = CreateDefaultSubobject<UBoxComponent>(TEXT("CloseDoorTrigger"));
+	CloseDoorTrigger->SetupAttachment(DoorFrameMesh);
+	CloseDoorTrigger->SetCollisionResponseToAllChannels(ECR_Overlap);
 }
 
 // Called when the game starts or when spawned
@@ -36,6 +42,8 @@ void ADoor::BeginPlay()
 
 		GameMode->Levels.Add(DoorID, LevelInstance);
 	}
+
+	CloseDoorTrigger->OnComponentBeginOverlap.AddDynamic(this, &ADoor::ComponentBeginOverlap);
 }
 
 // Called every frame
@@ -44,8 +52,19 @@ void ADoor::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 
 	FRotator TargetRotation = bIsOpen ? OpenRotation : CloseRotation;
+	float DoorSpeed = bIsOpen ? DoorOpenSpeed : DoorCloseSpeed;
 	FRotator NewRotation = FMath::Lerp(DoorMesh->GetRelativeRotation(), TargetRotation, DeltaTime * DoorSpeed);
 	DoorMesh->SetRelativeRotation(NewRotation);
+}
+
+void ADoor::ComponentBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult)
+{
+	AMainCharacter* Player = Cast<AMainCharacter>(OtherActor);
+	if (Player)
+	{
+		bIsOpen = false;
+		// Update player ui?
+	}
 }
 
 void ADoor::OpenDoor()

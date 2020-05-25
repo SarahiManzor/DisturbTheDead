@@ -191,10 +191,12 @@ FVector AMainCharacter::GetNormalizedXYProjectedLine(FVector InputVector)
 	return OutputVector;
 }
 
-void AMainCharacter::KillAllEnemys()
+void AMainCharacter::ResetForNextLevel()
 {
 	for (AEnemy* Enemy : EnemyList)
 	{
 		Enemy->Kill();
 	}
+
+	TotalCollected = 0;
 }

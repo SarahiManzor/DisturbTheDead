@@ -87,5 +87,6 @@ void AEnemy::StartChase()
 void AEnemy::Kill()
 {
 	bIsChasing = false;
+	GetMovementComponent()->Velocity = FVector::ZeroVector;
 }
 
