@@ -7,6 +7,7 @@
 #include "MainCharacter.generated.h"
 
 class AGrave;
+class AEnemy;
 
 UCLASS()
 class WEEKLYGAMEJAM150_API AMainCharacter : public ACharacter
@@ -57,6 +58,8 @@ public:
 	UFUNCTION(BlueprintPure)
 	FORCEINLINE bool IsAlive() { return bIsAlive; }
 
+	void KillAllEnemys();
+
 protected:
 private:
 	void MoveForward(float AxisValue);
@@ -68,4 +71,6 @@ private:
 	void ActorBeginOverlap(AActor* OverlappedActor, AActor* OtherActor);
 	UFUNCTION()
 	void ActorEndOverlap(AActor* OverlappedActor, AActor* OtherActor);
+
+	TArray<AEnemy*> EnemyList;
 };

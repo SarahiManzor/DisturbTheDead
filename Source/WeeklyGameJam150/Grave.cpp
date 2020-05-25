@@ -59,12 +59,12 @@ void AGrave::Tick(float DeltaTime)
 
 }
 
-bool AGrave::Dig()
+bool AGrave::Dig(AEnemy* &SpawnedEnemy)
 {
 	Health--;
 	if (Health == 0)
 	{
-		SpawnGhost();
+		SpawnedEnemy = SpawnGhost();
 		bSpawning = true;
 		InteractCollider->SetRelativeLocation(InteractCollider->GetRelativeLocation() + FVector::UpVector * InteractCollider->GetRelativeLocation() * -2.f);
 		CoffinBaseMesh->SetRelativeLocation(CoffinBaseMesh->GetRelativeLocation() + FVector::UpVector * 75.f);
@@ -76,11 +76,13 @@ bool AGrave::Dig()
 	return false;
 }
 
-void AGrave::SpawnGhost()
+AEnemy* AGrave::SpawnGhost()
 {
 	if (Ghost)
 	{
 		AEnemy* Enemy = GetWorld()->SpawnActor<AEnemy>(Ghost, GetActorLocation() + GetActorRotation().RotateVector(GhostSpawnPoint), FRotator::ZeroRotator);
+		return Enemy;
 	}
+	return nullptr;
 }
 

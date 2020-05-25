@@ -64,10 +64,10 @@ private:
 public:
 	// Reduces health of grave and returns value if health hits zero
 	// also calls ghost spawn
-	bool Dig();
+	bool Dig(AEnemy* &SpawnedEnemy);
 
 	// Spawns ghost at GhostSpawnPoint
-	void SpawnGhost();
+	AEnemy* SpawnGhost();
 protected:
 private:
 

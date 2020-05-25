@@ -136,10 +136,12 @@ void AMainCharacter::SelectObject()
 			{
 				UE_LOG(LogTemp, Warning, TEXT("Is diggable"));
 
-				if (Grave->Dig())
+				AEnemy* SpawnedEnemy;
+				if (Grave->Dig(SpawnedEnemy))
 				{
 					// Todo: Do something with the loot
 					TotalCollected += 1;
+					EnemyList.Add(SpawnedEnemy);
 				}
 			}
 		}
@@ -189,3 +191,10 @@ FVector AMainCharacter::GetNormalizedXYProjectedLine(FVector InputVector)
 	return OutputVector;
 }
 
+void AMainCharacter::KillAllEnemys()
+{
+	for (AEnemy* Enemy : EnemyList)
+	{
+		Enemy->Kill();
+	}
+}

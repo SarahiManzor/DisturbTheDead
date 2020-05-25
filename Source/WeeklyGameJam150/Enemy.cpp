@@ -84,3 +84,8 @@ void AEnemy::StartChase()
 	bIsChasing = true;
 }
 
+void AEnemy::Kill()
+{
+	bIsChasing = false;
+}
+

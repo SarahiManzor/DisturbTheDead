@@ -44,6 +44,7 @@ private:
 
 // ----------Custom Functions----------
 public:
+	void Kill();
 protected:
 private:
 	void StartChase();
