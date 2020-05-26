@@ -56,6 +56,7 @@ private:
 	TArray<bool> TreasuresCollected;
 	bool bIsAlive = true;
 	bool bIsDigging = false;
+	int lastTreasureIndex = -1;
 
 	FVector CheckpointLocation = FVector::ZeroVector;
 

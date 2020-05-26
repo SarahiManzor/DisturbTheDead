@@ -162,6 +162,7 @@ void AMainCharacter::SelectObject()
 				if (Grave->Dig(SpawnedEnemy))
 				{
 					// Todo: Do something with the loot
+					lastTreasureIndex = Grave->GetTreasureId();
 					TreasuresCollected[Grave->GetTreasureId()] = true;
 					NextInstruction();
 				}
@@ -196,7 +197,7 @@ void AMainCharacter::NextInstruction(bool Forced)
 			TotalCollected += 1;
 			bUpdated = true;
 		}
-		else if (LootIndex > 0 && TreasuresCollected[LootIndex - 1])
+		else if (LootIndex > 0 && lastTreasureIndex <= LootIndex && TreasuresCollected[LootIndex - 1])
 		{
 			GameMode->NextInstruction();
 			CurrentInstruction = GameMode->CurrentInstruction.Instruction;

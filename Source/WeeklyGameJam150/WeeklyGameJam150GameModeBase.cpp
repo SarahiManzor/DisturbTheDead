@@ -67,7 +67,7 @@ void AWeeklyGameJam150GameModeBase::FailLevel()
 		// Todo: Proceed to next level / Open door or something / Reset Ghosts
 		Levels[CurrentLevel].DoorToNextLevel->SetDoorOpen(false);
 		CurrentInstructionIndex = ResetIndex - 1;
-		NextInstruction();
+		NextInstruction(true);
 	}
 }
 
