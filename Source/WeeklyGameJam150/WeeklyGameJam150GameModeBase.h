@@ -21,6 +21,21 @@ struct FLevelInstance
 	ADoor* DoorToNextLevel;
 };
 
+USTRUCT()
+struct FInstruction
+{
+	GENERATED_BODY()
+
+	UPROPERTY(VisibleAnywhere)
+	FString Instruction;
+
+	UPROPERTY(VisibleAnywhere)
+	bool bCanSkip;
+
+	UPROPERTY(VisibleAnywhere)
+	bool bDontAppend;
+};
+
 /**
  * 
  */
@@ -44,18 +59,30 @@ protected:
 public:
 	UPROPERTY(VisibleAnywhere)
 	TMap<int, FLevelInstance> Levels;
+
+	FInstruction CurrentInstruction;
 protected:
 private:
 	AMainCharacter* Player;
 
 	int CurrentLevel = 0;
 
+	TArray<FInstruction> Instructions;
+	int CurrentInstructionIndex = -1;
+
+	int ResetIndex = 0;
+
 	// ----------Custom Functions----------
 public:
 	FORCEINLINE void NextLevel() { CurrentLevel ++; }
-
+	void NextInstruction(bool Forced = false);
+	void SkipNextInstruction();
+	void SetResetIndex();
+	FORCEINLINE int32 GetLevelIndex() { return CurrentLevel; }
 	void FailLevel();
 protected:
 private:
 	void TrySetPlayer();
+
+	void GetInstructions();
 };

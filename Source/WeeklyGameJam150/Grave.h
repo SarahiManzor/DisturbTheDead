@@ -56,6 +56,9 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Grave")
 	bool bHasTreasure = false;
 
+	UPROPERTY(EditAnywhere, Category = "Grave")
+	int TreasureId = -1;
+
 	float BaseHealth = 1.f;
 	float Health;
 
@@ -73,7 +76,7 @@ private:
 	// ----------Custom Functions----------
 public:
 	// Reduces health of grave and returns value if health hits zero
-	// also calls ghost spawn
+	// also calls ghost spawn. Returns if grave had treasure
 	bool Dig(AEnemy* &SpawnedEnemy);
 
 	void Bury();
@@ -83,6 +86,9 @@ public:
 
 	UFUNCTION(BlueprintPure)
 	FORCEINLINE bool IsSpawned() { return bSpawning; }
+
+	UFUNCTION(BlueprintPure)
+	FORCEINLINE int32 GetTreasureId() { return TreasureId; }
 
 	FVector GetSpawnLocation();
 

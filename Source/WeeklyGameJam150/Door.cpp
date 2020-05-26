@@ -31,7 +31,7 @@ ADoor::ADoor()
 void ADoor::BeginPlay()
 {
 	Super::BeginPlay();
-	UE_LOG(LogTemp, Warning, TEXT("Door %i"), DoorID);
+	UE_LOG(LogTemp, Warning, TEXT("Door %i"), DoorId);
 
 	AWeeklyGameJam150GameModeBase* GameMode = Cast<AWeeklyGameJam150GameModeBase>(UGameplayStatics::GetGameMode(this));
 	if (GameMode)
@@ -40,7 +40,7 @@ void ADoor::BeginPlay()
 		LevelInstance.DoorToNextLevel = this;
 		LevelInstance.TreasureToWin = TreasureToOpen;
 
-		GameMode->Levels.Add(DoorID, LevelInstance);
+		GameMode->Levels.Add(DoorId, LevelInstance);
 	}
 
 	CloseDoorTrigger->OnComponentBeginOverlap.AddDynamic(this, &ADoor::ComponentBeginOverlap);
@@ -73,6 +73,6 @@ void ADoor::ComponentBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* O
 void ADoor::SetDoorOpen(bool NewOpen)
 {
 	bIsOpen = NewOpen;
-	UE_LOG(LogTemp, Warning, TEXT("Door %i %s"), DoorID, bIsOpen ? "Open" : "Closed");
+	UE_LOG(LogTemp, Warning, TEXT("Door %i %s"), DoorId, bIsOpen ? "Open" : "Closed");
 }
 

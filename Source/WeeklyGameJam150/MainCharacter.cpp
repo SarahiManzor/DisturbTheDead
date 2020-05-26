@@ -61,6 +61,9 @@ void AMainCharacter::BeginPlay()
 
 	CheckpointLocation = GetActorLocation();
 	StartRotation = GetActorRotation();
+
+	TreasuresCollected.Init(false, 3);
+	NextInstruction(true);
 }
 
 // Called every frame
@@ -79,6 +82,7 @@ void AMainCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompo
 	PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &AMainCharacter::MoveForward);
 	PlayerInputComponent->BindAxis(TEXT("MoveRight"), this, &AMainCharacter::MoveRight);
 	PlayerInputComponent->BindAction(TEXT("LeftClick"), IE_Pressed, this, &AMainCharacter::SelectObject);
+	PlayerInputComponent->BindAction(TEXT("SkipInstruction"), IE_Pressed, this, &AMainCharacter::NextInstruction);
 
 }
 
@@ -114,7 +118,7 @@ void AMainCharacter::SelectObject()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Selecting"));
 	APlayerController* PC = Cast<APlayerController>(GetController());
-	if (PC && bIsAlive)
+	if (PC && bIsAlive && !bIsDigging && bCanDig)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Player controller found"));
 		FVector2D MousePos;
@@ -145,27 +149,92 @@ void AMainCharacter::SelectObject()
 			{
 				UE_LOG(LogTemp, Warning, TEXT("Is diggable"));
 
+				FRotator LookAtRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Grave->GetSpawnLocation());
+				LookAtRotation.Pitch = 0.f;
+				GetCharacterMovement()->Velocity = FVector::ZeroVector;
+				SetActorRotation(LookAtRotation);
+				bIsDigging = true;
+
+				FTimerHandle TimerHandle;
+				GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AMainCharacter::FinishedDigging, .5f, false, .5f);
+
 				AEnemy* SpawnedEnemy;
 				if (Grave->Dig(SpawnedEnemy))
 				{
 					// Todo: Do something with the loot
-					TotalCollected += 1;
-					EnemyList.Add(SpawnedEnemy);
+					TreasuresCollected[Grave->GetTreasureId()] = true;
+					NextInstruction();
+				}
+				if (SpawnedEnemy)
+				{
 					Grave->SetHighlight(false);
-					bIsDigging = true;
-
-					FRotator LookAtRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Grave->GetSpawnLocation());
-					LookAtRotation.Pitch = 0.f;
-					GetCharacterMovement()->Velocity = FVector::ZeroVector;
-					SetActorRotation(LookAtRotation);
-
-					FTimerHandle TimerHandle;
-					GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AMainCharacter::FinishedDigging, .5f, false, .5f);					
+					EnemyList.Add(SpawnedEnemy);
 				}
 			}
 		}
 	}
 }
+
+void AMainCharacter::NextInstruction()
+{
+	if (bIsAlive)
+		NextInstruction(false);
+}
+
+void AMainCharacter::NextInstruction(bool Forced)
+{
+	bool bUpdated = false;
+	AWeeklyGameJam150GameModeBase* GameMode = Cast<AWeeklyGameJam150GameModeBase>(UGameplayStatics::GetGameMode(this));
+	if (TotalCollected <= TreasuresCollected.Num() && TotalCollected >= 0)
+	{
+		int32 LootIndex = GetLootIndex();
+		if (LootIndex >= 0 && TreasuresCollected[LootIndex])
+		{
+			GameMode->SkipNextInstruction();
+			CurrentInstruction = GameMode->CurrentInstruction.Instruction;
+			bCanSkip = GameMode->CurrentInstruction.bCanSkip;
+			TotalCollected += 1;
+			bUpdated = true;
+		}
+		else if (LootIndex > 0 && TreasuresCollected[LootIndex - 1])
+		{
+			GameMode->NextInstruction();
+			CurrentInstruction = GameMode->CurrentInstruction.Instruction;
+			bCanSkip = GameMode->CurrentInstruction.bCanSkip;
+			TotalCollected += 1;
+			bUpdated = true;
+		}
+	}
+	
+	if (!bUpdated && GameMode && (bCanSkip || Forced))
+	{
+		GameMode->NextInstruction();
+		CurrentInstruction = GameMode->CurrentInstruction.Instruction;
+		bCanSkip = GameMode->CurrentInstruction.bCanSkip;
+	}
+}
+
+int32 AMainCharacter::GetLootIndex()
+{
+	for (int32 i = 0; i < TreasuresCollected.Num(); i++)
+	{
+		if (!TreasuresCollected[i])
+			return i;
+	}
+
+	return 0;
+}
+
+FString AMainCharacter::GetCurrentInstruction()
+{
+	return CurrentInstruction;
+}
+
+bool AMainCharacter::CanSkipInstruction()
+{
+	return bCanSkip;
+}
+
 
 void AMainCharacter::ActorBeginOverlap(AActor* OverlappedActor, AActor* OtherActor)
 {
@@ -215,7 +284,19 @@ void AMainCharacter::HitCheckPoint(FVector CheckPoint)
 	AWeeklyGameJam150GameModeBase* GameMode = Cast<AWeeklyGameJam150GameModeBase>(UGameplayStatics::GetGameMode(this));
 	if (GameMode)
 	{
+		if (GameMode->GetLevelIndex() != 0)
+		{
+			GameMode->NextInstruction(true);
+			CurrentInstruction = GameMode->CurrentInstruction.Instruction;
+			bCanSkip = GameMode->CurrentInstruction.bCanSkip;
+		}
+		else
+		{
+			bCanSkip = true;
+		}
+
 		GameMode->NextLevel();
+		GameMode->SetResetIndex();
 	}
 	ResetForNextLevel();
 }
@@ -253,6 +334,8 @@ void AMainCharacter::ResetForNextLevel()
 	EnemyList.Empty();
 
 	TotalCollected = 0;
+	TreasuresCollected.Empty();
+	TreasuresCollected.Init(false, 3);
 }
 
 void AMainCharacter::ClearProgress()
@@ -268,9 +351,14 @@ void AMainCharacter::ClearProgress()
 	if (GameMode)
 	{
 		GameMode->FailLevel();
+		GameMode->NextInstruction();
+		CurrentInstruction = GameMode->CurrentInstruction.Instruction;
+		bCanSkip = GameMode->CurrentInstruction.bCanSkip;
 	}
 
 	TotalCollected = 0;
+	TreasuresCollected.Empty();
+	TreasuresCollected.Init(false, 3);
 }
 
 void AMainCharacter::FinishedDigging()

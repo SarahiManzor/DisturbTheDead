@@ -42,10 +42,13 @@ private:
 	UBoxComponent* CloseDoorTrigger;
 
 	UPROPERTY(EditAnywhere, category = "Door Settings")
-	int DoorID = 0;
+	int DoorId = 0;
 
 	UPROPERTY(EditAnywhere, category = "Door Settings")
-	int TreasureToOpen = 4;
+	int TreasureId = 0;
+
+	UPROPERTY(EditAnywhere, category = "Door Settings")
+	int TreasureToOpen = 3;
 
 	UPROPERTY(EditAnywhere, category = "Door Settings")
 	bool bIsOpen;

@@ -8,6 +8,7 @@
 
 class AGrave;
 class AEnemy;
+struct FInstruction;
 
 UCLASS()
 class WEEKLYGAMEJAM150_API AMainCharacter : public ACharacter
@@ -39,6 +40,8 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 	class USpringArmComponent* CameraBoom;
 
+	bool bCanDig = false;
+
 protected:
 private:
 	FRotator StartRotation;
@@ -50,6 +53,7 @@ private:
 	TArray<AGrave*> DiggableGraves;
 
 	int TotalCollected = 0;
+	TArray<bool> TreasuresCollected;
 	bool bIsAlive = true;
 	bool bIsDigging = false;
 
@@ -57,10 +61,19 @@ private:
 
 	TArray<AEnemy*> EnemyList;
 
+	FString CurrentInstruction;
+	bool bCanSkip;
+
 	// ----------Custom Functions----------
 public:
 	UFUNCTION(BlueprintPure)
 	FORCEINLINE int GetTotalCollected() { return TotalCollected; }
+
+	UFUNCTION(BlueprintPure)
+	FString GetCurrentInstruction();
+
+	UFUNCTION(BlueprintPure)
+	bool CanSkipInstruction();
 	
 	UFUNCTION(BlueprintPure)
 	FORCEINLINE bool IsAlive() { return bIsAlive; }
@@ -80,6 +93,9 @@ private:
 	void MoveForward(float AxisValue);
 	void MoveRight(float AxisValue);
 	void SelectObject();
+	void NextInstruction();
+	void NextInstruction(bool Forced);
+	int32 GetLootIndex();
 	FVector GetNormalizedXYProjectedLine(FVector InputVector);
 
 	UFUNCTION()
