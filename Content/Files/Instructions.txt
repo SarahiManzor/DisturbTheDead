@@ -12,30 +12,26 @@ Last one should be the only other unique one in the area.
 You're doing great. Move on to the next area.[DONTAPPEND]
 The first grave you'll need to rob is the one furthest away from the only round stone grave in the area.
 Count how many wooden graves there are. The next one should be that many graves away from the first.
-Now count how many stone graves there are. The next one should be that many graves away from the second.
+Now count how many stone graves there are. The next one should be that many graves away from the last grave I described.
 Well done! Now get out of there and into the next area![DONTAPPEND]
 Grave number one of this area is surrounded by 4 wooden graves in all 4 directions.
 The next one has a stone cross to its left, and wood grave to its right.
 The last one only has round stone graves surrounding it.
 Good work. Now move on to the next area. The sprits shouldn't be able to follow you in.[DONTAPPEND]
-Okay, this area is a gold mine. Dig every grave you can get your hands on, they've all got treasure. Just make sure to the order you dig carefully otherwise you'll get overrun!
+Okay, this area is a gold mine. Dig every grave you can get your hands on, they've all got treasure. Just make sure to order your digs carefully otherwise you'll get overrun!
 Nice! We are going to be rich!
 Three More! Try luring the spirits away before trying to dig!
 Almost done!
 One more!
 Great work! Now get out of there![DONTAPPEND]
-First grave should be on your left when you walked in.
-Next one is right next to the first.
-Last one should be directly accross the first one.
-Good work. Now move on to the next area. The sprits shouldn't be able to follow you in.[DONTAPPEND]
-First grave should be on your left when you walked in.
-Next one is right next to the first.
-Last one should be directly accross the first one.
-Good work. Now move on to the next area. The sprits shouldn't be able to follow you in.[DONTAPPEND]
-Alright, you're doing great so far. From what I've heard, these graves get more challenging. The next grave is at the intersection of the four trees.
-Awesome. The next grave is 6 fence length's horizontally from the entrance.
-Almost done, The final grave is the stone grave bertween the previous two.
-We are going to be rich! Great job out there.[DONTAPPEND]
-Post text 1.[CANSKIP]
-Post text 2.[CANSKIP]
-Post text 3.[CANSKIP]
+I remember the first grave here being a wooden one that was behind a tree that had a tree hollow, you know, like one of those holes animals live in?
+You're out at the same time I investigated the area, there should be a grave that falls directly in the shadow of a tree. Dig it up.
+Hmm I don't quite rememeber where this last one was... All I remember is that it was a round stone grave. Good luck!
+Great job! Let's get moving now.[DONTAPPEND]
+The first grave should isolated away from the rest.
+The next one should have a stone directly accross from it. There is more than one stone? I remember it being pretty big, look for the biggest stone you can find.
+Lastly I remember this grave being the closest wooden grave to the grave across the last one I described.
+We are all done here! Let get going.[DONTAPPEND]
+Amazing work out there. You managed to disturb the slumber of so many of the dead.[CANSKIP]
+But what's that matter with all the treasure we've got?! Bravo![CANSKIP]
+Now head on back and we can split the haul.[CANSKIP]

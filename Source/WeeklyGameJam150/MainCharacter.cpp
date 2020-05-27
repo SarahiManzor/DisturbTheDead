@@ -166,7 +166,7 @@ void AMainCharacter::SelectObject()
 					lastTreasureIndex = Grave->GetTreasureId();
 					if (TreasuresCollected[Grave->GetTreasureId()])
 					{
-						for (int32 i = 0; TreasuresCollected.Num(); i++)
+						for (int32 i = 0; i < TreasuresCollected.Num(); i++)
 						{
 							if (!TreasuresCollected[i])
 							{
@@ -215,7 +215,7 @@ void AMainCharacter::NextInstruction(bool Forced)
 {
 	bool bUpdated = false;
 	AWeeklyGameJam150GameModeBase* GameMode = Cast<AWeeklyGameJam150GameModeBase>(UGameplayStatics::GetGameMode(this));
-	if (TotalCollected <= TreasuresCollected.Num() && TotalCollected >= 0 && lastTreasureIndex == TotalCollected)
+	if (TotalCollected >= 0 && lastTreasureIndex == TotalCollected || TotalCollected >= TreasuresCollected.Num())
 	{
 		if (TotalCollected < TreasuresCollected.Num() - 1 && TreasuresCollected[TotalCollected + 1])
 		{

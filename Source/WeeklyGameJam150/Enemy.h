@@ -37,6 +37,9 @@ private:
 	UPROPERTY(EditAnywhere)
 	UParticleSystem* SpawnParticles;
 
+	UPROPERTY(EditAnywhere)
+	UParticleSystem* DeathParticles;
+
 	AMainCharacter* Player;
 
 	UPROPERTY(EditAnywhere)

@@ -104,6 +104,12 @@ void AEnemy::Kill()
 	GetMovementComponent()->Velocity = FVector::ZeroVector;
 	GetWorld()->GetTimerManager().ClearAllTimersForObject(this);
 	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	SetActorScale3D(FVector::ZeroVector);
+
+	if (DeathParticles)
+	{
+		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), DeathParticles, GetActorLocation(), FRotator(0.0f));
+	}
 }
 
 void AEnemy::ResetGrave()
