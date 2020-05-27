@@ -164,7 +164,22 @@ void AMainCharacter::SelectObject()
 					// Todo: Do something with the loot
 					bGotTreasure = true;
 					lastTreasureIndex = Grave->GetTreasureId();
-					TreasuresCollected[Grave->GetTreasureId()] = true;
+					if (TreasuresCollected[Grave->GetTreasureId()])
+					{
+						for (int32 i = 0; TreasuresCollected.Num(); i++)
+						{
+							if (!TreasuresCollected[i])
+							{
+								lastTreasureIndex += 1;
+								TreasuresCollected[i] = true;
+								break;
+							}
+						}
+					}
+					else
+					{
+						TreasuresCollected[Grave->GetTreasureId()] = true;
+					}
 					NextInstruction(false);
 
 					if (CorrectParticles)
