@@ -6,7 +6,6 @@
 #include "GameFramework/Actor.h"
 #include "Grave.generated.h"
 
-class USkeletalMeshComponent;
 class AEnemy;
 class UBoxComponent;
 class UStaticMeshComponent;
@@ -31,7 +30,7 @@ public:
 	// ----------Variables----------
 public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Grave")
-	USkeletalMeshComponent* DirtMesh;
+	UStaticMeshComponent* DirtHighlightMesh;
 protected:
 private:
 

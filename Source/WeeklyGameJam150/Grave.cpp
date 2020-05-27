@@ -2,7 +2,6 @@
 
 
 #include "Grave.h"
-#include "Components/SkeletalMeshComponent.h"
 #include "Engine/World.h"
 #include "Enemy.h"
 #include "Components/BoxComponent.h"
@@ -14,8 +13,8 @@ AGrave::AGrave()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	DirtMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("DirtMesh"));
-	DirtMesh->SetupAttachment(GetRootComponent());
+	DirtHighlightMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("DirtHighlightMesh"));
+	DirtHighlightMesh->SetupAttachment(GetRootComponent());
 
 	CoffinBaseMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("CoffinBaseMesh"));
 	CoffinBaseMesh->SetupAttachment(GetRootComponent());
@@ -77,7 +76,7 @@ bool AGrave::Dig(AEnemy* &SpawnedEnemy)
 		SpawnedEnemy = SpawnGhost();
 		SpawnedEnemy->SetHomeGrave(this);
 		bSpawning = true;
-		InteractCollider->SetRelativeLocation(InteractCollider->GetRelativeLocation() + FVector::UpVector * 50.f);
+		//InteractCollider->SetRelativeLocation(InteractCollider->GetRelativeLocation() + FVector::UpVector * 50.f);
 		return bHasTreasure;
 	}
 
@@ -97,7 +96,7 @@ AEnemy* AGrave::SpawnGhost()
 void AGrave::Bury()
 {
 	Health = BaseHealth;
-	InteractCollider->SetRelativeLocation(InteractCollider->GetRelativeLocation() + FVector::UpVector * -50.f);
+	//InteractCollider->SetRelativeLocation(InteractCollider->GetRelativeLocation() + FVector::UpVector * -50.f);
 	CoffinBaseMesh->SetRelativeLocation(CoffinBaseMesh->GetRelativeLocation() - FVector::UpVector * (75.f - TargetRiseDelta));
 	CoffinLidMesh->SetRelativeLocation(CoffinLidMesh->GetRelativeLocation() - FVector::UpVector * (75.f - TargetRiseDelta));
 	CoffinLidMesh->SetRelativeRotation(FRotator(0.f, 0.f, 0.f));

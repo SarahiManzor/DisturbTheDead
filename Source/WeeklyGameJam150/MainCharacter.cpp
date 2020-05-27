@@ -285,6 +285,7 @@ void AMainCharacter::HitCheckPoint(FVector CheckPoint)
 	AWeeklyGameJam150GameModeBase* GameMode = Cast<AWeeklyGameJam150GameModeBase>(UGameplayStatics::GetGameMode(this));
 	if (GameMode)
 	{
+		GameMode->SetResetIndex();
 		if (GameMode->GetLevelIndex() != 0)
 		{
 			GameMode->NextInstruction(true);
@@ -297,7 +298,6 @@ void AMainCharacter::HitCheckPoint(FVector CheckPoint)
 		}
 
 		GameMode->NextLevel();
-		GameMode->SetResetIndex();
 	}
 	ResetForNextLevel();
 }
@@ -334,6 +334,7 @@ void AMainCharacter::ResetForNextLevel()
 	}
 	EnemyList.Empty();
 
+	lastTreasureIndex = -1;
 	TotalCollected = 0;
 	TreasuresCollected.Empty();
 	TreasuresCollected.Init(false, 3);
@@ -352,11 +353,12 @@ void AMainCharacter::ClearProgress()
 	if (GameMode)
 	{
 		GameMode->FailLevel();
-		GameMode->NextInstruction();
+		GameMode->NextInstruction(true);
 		CurrentInstruction = GameMode->CurrentInstruction.Instruction;
 		bCanSkip = GameMode->CurrentInstruction.bCanSkip;
 	}
 
+	lastTreasureIndex = -1;
 	TotalCollected = 0;
 	TreasuresCollected.Empty();
 	TreasuresCollected.Init(false, 3);
