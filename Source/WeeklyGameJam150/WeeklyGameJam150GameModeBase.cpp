@@ -126,7 +126,7 @@ void AWeeklyGameJam150GameModeBase::SkipNextInstruction()
 		NewInstruction.bCanSkip = true;
 		NewInstruction.bDontAppend = false;
 		NewInstruction.Instruction = CurrentInstruction.Instruction + "";
-		NewInstruction.Instruction += " You've already looted that one? Some luck you got there!";
+		NewInstruction.Instruction += " You've already looted that one? Oh yeah you did!";
 		CurrentInstruction = NewInstruction;
 	}
 }
