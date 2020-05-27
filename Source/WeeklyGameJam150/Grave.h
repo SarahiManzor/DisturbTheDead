@@ -58,8 +58,8 @@ private:
 	UPROPERTY(EditAnywhere, Category = "Grave")
 	int TreasureId = -1;
 
-	float BaseHealth = 1.f;
-	float Health;
+	int BaseHealth = 1;
+	int Health;
 
 	float BaseRiseDelta = 75.f;
 	float TargetRiseDelta;

@@ -101,12 +101,12 @@ void AWeeklyGameJam150GameModeBase::NextInstruction(bool Forced)
 	}
 	CurrentInstructionIndex++;
 
-	if (CurrentInstructionIndex == 2)
+	if (CurrentInstructionIndex == 3)
 	{
 		Levels[CurrentLevel].DoorToNextLevel->SetDoorOpen(true);
 	}
 
-	if (CurrentInstructionIndex == 3)
+	if (CurrentInstructionIndex == 4)
 	{
 		Player->bCanDig = true;
 	}

@@ -40,6 +40,7 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera)
 	class USpringArmComponent* CameraBoom;
 
+	UPROPERTY(EditAnywhere)
 	bool bCanDig = false;
 
 protected:
@@ -64,6 +65,7 @@ private:
 
 	FString CurrentInstruction;
 	bool bCanSkip;
+	bool bForceSkip = false;
 
 	// ----------Custom Functions----------
 public:
@@ -96,7 +98,6 @@ private:
 	void SelectObject();
 	void NextInstruction();
 	void NextInstruction(bool Forced);
-	int32 GetLootIndex();
 	FVector GetNormalizedXYProjectedLine(FVector InputVector);
 
 	UFUNCTION()

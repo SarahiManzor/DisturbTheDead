@@ -1,18 +1,19 @@
 Alright buddy. I'm just going to read out the names of the graves you need to rob and you should be out of there in no time.[CANSKIP]
 You can move around with the WASD keys. Digging a grave should just take a single swing of your shovel. Left click a grave when you're close enough to dig it.[CANSKIP]
-You got all that? Okay. First grave we are looking for is the one belonging to an Edmond Cuff. Wait... you can't read?!?! It's cool, I'll just try my best to describe where I remember it being when I investigated the area.
+Oh and by the way, the spirits you're stealing from won't be happy. If they lay a hand on you, you're done! Try luring them away when you're trying to dig.[CANSKIP]
+You got all that? Okay. First grave we are looking for is the one belonging to an Edmond Cuff. Wait... you can't read?!?! It's cool, I'll just try my best to describe where it was when I investigated the area.
 First grave should be on your left when you walked in.
-Next one is right next to the first.
+Second one is right next to the first.
 Last one should be directly accross the first one.
 Good work. Now move on to the next area. The sprits shouldn't be able to follow you in.[DONTAPPEND]
-First grave should be on your left when you walked in.
-Next one is right next to the first.
-Last one should be directly accross the first one.
-Good work. Now move on to the next area. The sprits shouldn't be able to follow you in.[DONTAPPEND]
-First grave should be on your left when you walked in.
-Next one is right next to the first.
-Last one should be directly accross the first one.
-Good work. Now move on to the next area. The sprits shouldn't be able to follow you in.[DONTAPPEND]
+Okay now I remember this grave being awful close to a tree, look for it.
+The next one should be the only wooden grave in the area.
+Last one should be the only other unique one in the area.
+You're doing great. Move on to the next area.[DONTAPPEND]
+The first grave you'll need to rob is the one furthest away from the only round stone grave in the area.
+Count how many wooden graves there are. The next one should be that many graves away from the first.
+Now count how many stone graves there are. The next one should be that many graves away from the second.
+Well done! Now get out of there and into the next area![DONTAPPEND]
 First grave should be on your left when you walked in.
 Next one is right next to the first.
 Last one should be directly accross the first one.

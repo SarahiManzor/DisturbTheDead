@@ -164,7 +164,7 @@ void AMainCharacter::SelectObject()
 					// Todo: Do something with the loot
 					lastTreasureIndex = Grave->GetTreasureId();
 					TreasuresCollected[Grave->GetTreasureId()] = true;
-					NextInstruction();
+					NextInstruction(false);
 				}
 				if (SpawnedEnemy)
 				{
@@ -178,53 +178,44 @@ void AMainCharacter::SelectObject()
 
 void AMainCharacter::NextInstruction()
 {
-	if (bIsAlive)
-		NextInstruction(false);
+	if (bIsAlive && bCanSkip) 
+	{
+		NextInstruction(bForceSkip);
+		bForceSkip = false;
+	}
 }
 
 void AMainCharacter::NextInstruction(bool Forced)
 {
 	bool bUpdated = false;
 	AWeeklyGameJam150GameModeBase* GameMode = Cast<AWeeklyGameJam150GameModeBase>(UGameplayStatics::GetGameMode(this));
-	if (TotalCollected <= TreasuresCollected.Num() && TotalCollected >= 0)
+	if (TotalCollected <= TreasuresCollected.Num() && TotalCollected >= 0 && lastTreasureIndex == TotalCollected)
 	{
-		int32 LootIndex = GetLootIndex();
-		if (LootIndex >= 0 && TreasuresCollected[LootIndex])
+		if (TotalCollected < TreasuresCollected.Num() - 1 && TreasuresCollected[TotalCollected + 1])
 		{
 			GameMode->SkipNextInstruction();
-			CurrentInstruction = GameMode->CurrentInstruction.Instruction;
-			bCanSkip = GameMode->CurrentInstruction.bCanSkip;
-			TotalCollected += 1;
-			bUpdated = true;
 		}
-		else if (LootIndex > 0 && lastTreasureIndex <= LootIndex && TreasuresCollected[LootIndex - 1])
+		else
 		{
 			GameMode->NextInstruction();
-			CurrentInstruction = GameMode->CurrentInstruction.Instruction;
-			bCanSkip = GameMode->CurrentInstruction.bCanSkip;
-			TotalCollected += 1;
-			bUpdated = true;
 		}
+
+		CurrentInstruction = GameMode->CurrentInstruction.Instruction;
+		bCanSkip = GameMode->CurrentInstruction.bCanSkip;
+		if (bCanSkip)
+		{
+			lastTreasureIndex += 1;
+		}
+		TotalCollected += 1;
+		bUpdated = true;
 	}
 
-	FString b = FString("");
 	if (!bUpdated && GameMode && (bCanSkip || Forced))
 	{
-		GameMode->NextInstruction();
+		GameMode->NextInstruction(Forced);
 		CurrentInstruction = GameMode->CurrentInstruction.Instruction;
 		bCanSkip = GameMode->CurrentInstruction.bCanSkip;
 	}
-}
-
-int32 AMainCharacter::GetLootIndex()
-{
-	for (int32 i = 0; i < TreasuresCollected.Num(); i++)
-	{
-		if (!TreasuresCollected[i])
-			return i;
-	}
-
-	return 0;
 }
 
 FString AMainCharacter::GetCurrentInstruction()
@@ -287,16 +278,8 @@ void AMainCharacter::HitCheckPoint(FVector CheckPoint)
 	if (GameMode)
 	{
 		GameMode->SetResetIndex();
-		if (GameMode->GetLevelIndex() != 0)
-		{
-			GameMode->NextInstruction(true);
-			CurrentInstruction = GameMode->CurrentInstruction.Instruction;
-			bCanSkip = GameMode->CurrentInstruction.bCanSkip;
-		}
-		else
-		{
-			bCanSkip = true;
-		}
+		bCanSkip = true;
+		bForceSkip = true;
 
 		GameMode->NextLevel();
 	}

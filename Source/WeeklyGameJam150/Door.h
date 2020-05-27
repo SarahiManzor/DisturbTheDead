@@ -45,9 +45,6 @@ private:
 	int DoorId = 0;
 
 	UPROPERTY(EditAnywhere, category = "Door Settings")
-	int TreasureId = 0;
-
-	UPROPERTY(EditAnywhere, category = "Door Settings")
 	int TreasureToOpen = 3;
 
 	UPROPERTY(EditAnywhere, category = "Door Settings")
