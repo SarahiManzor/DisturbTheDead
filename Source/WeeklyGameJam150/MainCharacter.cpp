@@ -206,7 +206,8 @@ void AMainCharacter::NextInstruction(bool Forced)
 			bUpdated = true;
 		}
 	}
-	
+
+	FString b = FString("");
 	if (!bUpdated && GameMode && (bCanSkip || Forced))
 	{
 		GameMode->NextInstruction();

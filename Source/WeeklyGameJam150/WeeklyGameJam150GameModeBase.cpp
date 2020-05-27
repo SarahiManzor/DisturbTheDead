@@ -16,7 +16,6 @@ AWeeklyGameJam150GameModeBase::AWeeklyGameJam150GameModeBase()
 void AWeeklyGameJam150GameModeBase::BeginPlay()
 {
 	Super::BeginPlay();
-	GetInstructions();
 }
 
 void AWeeklyGameJam150GameModeBase::Tick(float DeltaSeconds)
@@ -73,7 +72,7 @@ void AWeeklyGameJam150GameModeBase::FailLevel()
 
 void AWeeklyGameJam150GameModeBase::GetInstructions()
 {
-	FString FileName = FPaths::ProjectContentDir() + "/Files/Instructions.txt";
+	FString FileName = FPaths::ProjectContentDir() + "Files/Instructions.txt";
 	TArray<FString> FileResults;
 	FFileHelper::LoadFileToStringArray(FileResults, *FileName);
 	for (FString i : FileResults)
@@ -96,6 +95,10 @@ void AWeeklyGameJam150GameModeBase::NextInstruction(bool Forced)
 {
 	if (CurrentInstruction.bDontAppend && !Forced) return;
 
+	if (Instructions.Num() == 0)
+	{
+		GetInstructions();
+	}
 	CurrentInstructionIndex++;
 
 	if (CurrentInstructionIndex == 2)
