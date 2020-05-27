@@ -8,6 +8,7 @@
 
 class AGrave;
 class AEnemy;
+class UParticleSystem;
 struct FInstruction;
 
 UCLASS()
@@ -47,6 +48,12 @@ protected:
 private:
 	FRotator StartRotation;
 
+	UPROPERTY(EditAnywhere)
+	UParticleSystem* CorrectParticles;
+
+	UPROPERTY(EditAnywhere)
+	UParticleSystem* IncorrectParticles;
+
 	// Movement speed in m/sec
 	UPROPERTY(EditAnywhere)
 	float MaxMovementSpeed = 100.f;
@@ -65,7 +72,8 @@ private:
 
 	FString CurrentInstruction;
 	bool bCanSkip;
-	bool bForceSkip = false;
+	bool bForceSkip = true;
+	bool bGotTreasure = false;
 
 	// ----------Custom Functions----------
 public:

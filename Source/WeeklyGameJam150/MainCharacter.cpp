@@ -162,9 +162,19 @@ void AMainCharacter::SelectObject()
 				if (Grave->Dig(SpawnedEnemy))
 				{
 					// Todo: Do something with the loot
+					bGotTreasure = true;
 					lastTreasureIndex = Grave->GetTreasureId();
 					TreasuresCollected[Grave->GetTreasureId()] = true;
 					NextInstruction(false);
+
+					if (CorrectParticles)
+					{
+						UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), CorrectParticles, GetActorLocation(), FRotator(0.0f));
+					}
+				}
+				else if (IncorrectParticles)
+				{
+					UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), IncorrectParticles, GetActorLocation(), FRotator(0.0f));
 				}
 				if (SpawnedEnemy)
 				{
@@ -182,6 +192,7 @@ void AMainCharacter::NextInstruction()
 	{
 		NextInstruction(bForceSkip);
 		bForceSkip = false;
+		bCanDig = true;
 	}
 }
 
@@ -215,7 +226,15 @@ void AMainCharacter::NextInstruction(bool Forced)
 		GameMode->NextInstruction(Forced);
 		CurrentInstruction = GameMode->CurrentInstruction.Instruction;
 		bCanSkip = GameMode->CurrentInstruction.bCanSkip;
+		bUpdated = true;
 	}
+
+	if (!bUpdated && bGotTreasure)
+	{
+		CurrentInstruction = "You got lucky with that one! Let try to find the one I am referring to though. " + CurrentInstruction;
+	}
+	
+	bGotTreasure = false;
 }
 
 FString AMainCharacter::GetCurrentInstruction()
@@ -261,6 +280,7 @@ void AMainCharacter::StartRestart()
 	ClearProgress();
 	bIsAlive = true;
 	bIsDigging = false;
+	bCanDig = true;
 
 	FTimerHandle TimerHandle;
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AMainCharacter::FadeCameraIn, 1.f, false, 1.f);
@@ -280,6 +300,7 @@ void AMainCharacter::HitCheckPoint(FVector CheckPoint)
 		GameMode->SetResetIndex();
 		bCanSkip = true;
 		bForceSkip = true;
+		bCanDig = false;
 
 		GameMode->NextLevel();
 	}

@@ -14,11 +14,11 @@ The first grave you'll need to rob is the one furthest away from the only round 
 Count how many wooden graves there are. The next one should be that many graves away from the first.
 Now count how many stone graves there are. The next one should be that many graves away from the second.
 Well done! Now get out of there and into the next area![DONTAPPEND]
-First grave should be on your left when you walked in.
-Next one is right next to the first.
-Last one should be directly accross the first one.
+Alright, you're doing great so far. From what I've heard, these graves get more challenging.The next grave is at the intersection of the four trees.
+Awesome. The next grave is 6 fence length's horizontally from the entrance.
+Almost done, The final grave is the stone grave bertween the previous two.
 Good work. Now move on to the next area. The sprits shouldn't be able to follow you in.[DONTAPPEND]
-First grave should be on your left when you walked in.
+Awesome, in this grave, the first grave is 
 Next one is right next to the first.
 Last one should be directly accross the first one.
 Good work. Now move on to the next area. The sprits shouldn't be able to follow you in.[DONTAPPEND]
