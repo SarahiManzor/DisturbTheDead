@@ -27,11 +27,11 @@ Great work! Now get out of there![DONTAPPEND]
 I remember the first grave here being a wooden one that was behind a tree that had a tree hollow, you know, like one of those holes animals live in?
 You're out at the same time I investigated the area, there should be a grave that falls directly in the shadow of a tree. Dig it up.
 Hmm I don't quite rememeber where this last one was... All I remember is that it was a round stone grave. Good luck!
-Great job! Let's get moving now.[DONTAPPEND]
+Great job finding that last one! Let's get moving now.[DONTAPPEND]
 The first grave should isolated away from the rest.
 The next one should have a stone directly accross from it. There is more than one stone? I remember it being pretty big, look for the biggest stone you can find.
 Lastly I remember this grave being the closest wooden grave to the grave across the last one I described.
 We are all done here! Let get going.[DONTAPPEND]
 Amazing work out there. You managed to disturb the slumber of so many of the dead.[CANSKIP]
 But what's that matter with all the treasure we've got?! Bravo![CANSKIP]
-Now head on back and we can split the haul.[CANSKIP]
+Now head on back and we can split the haul.
