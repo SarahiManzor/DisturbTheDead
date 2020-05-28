@@ -27,7 +27,7 @@ void AWeeklyGameJam150GameModeBase::Tick(float DeltaSeconds)
 	{
 		TrySetPlayer();
 	}
-	else if (CurrentLevel > 0)
+	else if (CurrentLevel > 0 && CurrentLevel < Levels.Num())
 	{
 		if (Levels.Num() > CurrentLevel && Player->GetTotalCollected() >= Levels[CurrentLevel].TreasureToWin)
 		{
