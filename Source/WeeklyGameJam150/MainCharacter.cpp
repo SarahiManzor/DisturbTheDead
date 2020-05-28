@@ -15,6 +15,7 @@
 #include "TimerManager.h"
 #include "Kismet/GameplayStatics.h"
 #include "WeeklyGameJam150GameModeBase.h"
+#include "Engine/TriggerBox.h"
 
 // Sets default values
 AMainCharacter::AMainCharacter()
@@ -66,14 +67,18 @@ void AMainCharacter::BeginPlay()
 	NextInstruction(true);
 
 	GetWorld()->GetFirstPlayerController()->PlayerCameraManager->StartCameraFade(1.f, 0.f, 4.f, FLinearColor::Black);
+
+	TotalDeaths = 0;
+	PlayTime = 0;
+	bGameComplete = false;
 }
 
 // Called every frame
 void AMainCharacter::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	//SetActorRotation(UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), FVector(-1000, 300, 20)));
-	//UE_LOG(LogTemp, Warning, TEXT("Ticking"));
+	if (!bGameComplete)
+		PlayTime += DeltaTime;
 }
 
 // Called to bind functionality to input
@@ -305,6 +310,15 @@ void AMainCharacter::ActorBeginOverlap(AActor* OverlappedActor, AActor* OtherAct
 		FTimerHandle TimerHandle;
 		GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AMainCharacter::StartRestart, 2.f, false, 2.f);
 	}
+
+	ATriggerBox* TriggerBox = Cast<ATriggerBox>(OtherActor);
+	if (TriggerBox && TriggerBox->GetName().Contains(TEXT("Complete")))// box
+	{
+		bGameComplete = true;
+		GetWorld()->GetFirstPlayerController()->PlayerCameraManager->StartCameraFade(0.f, 1.f, 1.5f, FLinearColor::Black, false, true);
+		GetController()->SetIgnoreLookInput(true);
+		GetController()->SetIgnoreMoveInput(true);
+	}
 }
 
 void AMainCharacter::StartRestart()
@@ -315,6 +329,7 @@ void AMainCharacter::StartRestart()
 	bIsAlive = true;
 	bIsDigging = false;
 	bCanDig = true;
+	TotalDeaths += 1;
 
 	FTimerHandle TimerHandle;
 	GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AMainCharacter::FadeCameraIn, 1.f, false, 1.f);

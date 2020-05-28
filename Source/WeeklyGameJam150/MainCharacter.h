@@ -75,6 +75,10 @@ private:
 	bool bForceSkip = true;
 	bool bGotTreasure = false;
 
+	int32 TotalDeaths;
+	float PlayTime;
+	bool bGameComplete;
+
 	// ----------Custom Functions----------
 public:
 	UFUNCTION(BlueprintPure)
@@ -98,6 +102,12 @@ public:
 
 	UFUNCTION()
 	FORCEINLINE bool GetIsAlive() { return bIsAlive; }
+
+	UFUNCTION(BlueprintPure)
+	FORCEINLINE bool GetGameComplete() { return bGameComplete; }
+
+	UFUNCTION(BlueprintPure)
+	FORCEINLINE float GetPlayTime() { return PlayTime; }
 
 protected:
 private:
