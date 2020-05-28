@@ -114,7 +114,7 @@ void AEnemy::Kill()
 
 void AEnemy::ResetGrave()
 {
-	if (HomeGrave)
+	if (HomeGrave != nullptr)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Reset grave"));
 		HomeGrave->Bury();

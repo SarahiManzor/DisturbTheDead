@@ -127,22 +127,12 @@ void AMainCharacter::SelectObject()
 	APlayerController* PC = Cast<APlayerController>(GetController());
 	if (PC && bIsAlive && !bIsDigging && bCanDig)
 	{
+		bCanDig = false;
 		UE_LOG(LogTemp, Warning, TEXT("Player controller found"));
 		FVector2D MousePos;
 		PC->GetMousePosition(MousePos.X, MousePos.Y);
 
-		/*int32 ViewPortSizeX;
-		int32 ViewPortSizeY;
-		PC->GetViewportSize(ViewPortSizeX, ViewPortSizeY);
-		FVector2D ScreenLocation(ViewPortSizeX * MousePos.X, ViewPortSizeY * MousePos.Y);
-
-		FVector WorldLocation;
-		FVector LookDirection;
-		PC->DeprojectScreenPositionToWorld(ScreenLocation.X, ScreenLocation.Y, WorldLocation, LookDirection);*/
-
-		FHitResult Hit;
-		//GetWorld()->LineTraceSingleByChannel(Hit, TopDownCameraComponent->GetComponentLocation(), TopDownCameraComponent->GetComponentLocation() + LookDirection * 1000.f, ECC_GameTraceChannel2);
-		
+		FHitResult Hit;		
 		PC->GetHitResultAtScreenPosition(MousePos, ECC_GameTraceChannel2, true, Hit);
 		if (Hit.GetActor())
 		{
@@ -154,6 +144,7 @@ void AMainCharacter::SelectObject()
 			}
 			if (Grave && DiggableGraves.Contains(Grave))
 			{
+				DiggableGraves.Remove(Grave);
 				UE_LOG(LogTemp, Warning, TEXT("Is diggable"));
 
 				FRotator LookAtRotation = UKismetMathLibrary::FindLookAtRotation(GetActorLocation(), Grave->GetSpawnLocation());
@@ -211,6 +202,7 @@ void AMainCharacter::SelectObject()
 				}
 			}
 		}
+		bCanDig = true;
 	}
 }
 
@@ -350,7 +342,6 @@ void AMainCharacter::HitCheckPoint(FVector CheckPoint)
 		bCanSkip = true;
 		bForceSkip = true;
 		bCanDig = false;
-
 		GameMode->NextLevel();
 	}
 	ResetForNextLevel();

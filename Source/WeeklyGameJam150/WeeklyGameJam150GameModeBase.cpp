@@ -27,12 +27,16 @@ void AWeeklyGameJam150GameModeBase::Tick(float DeltaSeconds)
 	{
 		TrySetPlayer();
 	}
-	else
+	else if (CurrentLevel > 0)
 	{
 		if (Levels.Num() > CurrentLevel && Player->GetTotalCollected() >= Levels[CurrentLevel].TreasureToWin)
 		{
 			// Todo: Proceed to next level / Open door or something / Reset Ghosts
 			Levels[CurrentLevel].DoorToNextLevel->SetDoorOpen(true);
+		}
+		else
+		{
+			Levels[CurrentLevel].DoorToNextLevel->SetDoorOpen(false);
 		}
 	}
 }

@@ -97,9 +97,15 @@ void AGrave::Bury()
 {
 	Health = BaseHealth;
 	//InteractCollider->SetRelativeLocation(InteractCollider->GetRelativeLocation() + FVector::UpVector * -50.f);
-	CoffinBaseMesh->SetRelativeLocation(CoffinBaseMesh->GetRelativeLocation() - FVector::UpVector * (75.f - TargetRiseDelta));
-	CoffinLidMesh->SetRelativeLocation(CoffinLidMesh->GetRelativeLocation() - FVector::UpVector * (75.f - TargetRiseDelta));
-	CoffinLidMesh->SetRelativeRotation(FRotator(0.f, 0.f, 0.f));
+	if (CoffinBaseMesh)
+	{
+		CoffinBaseMesh->SetRelativeLocation(CoffinBaseMesh->GetRelativeLocation() - FVector::UpVector * (75.f - TargetRiseDelta));
+	}
+	if (CoffinLidMesh)
+	{
+		CoffinLidMesh->SetRelativeLocation(CoffinLidMesh->GetRelativeLocation() - FVector::UpVector * (75.f - TargetRiseDelta));
+		CoffinLidMesh->SetRelativeRotation(FRotator(0.f, 0.f, 0.f));
+	}
 	TargetRiseDelta = BaseRiseDelta;
 	bSpawning = false;
 }
