@@ -30,7 +30,7 @@ Hmm I don't quite rememeber where this last one was... All I remember is that it
 Great job finding that last one! Let's get moving now.[DONTAPPEND]
 The first grave should be isolated away from the rest.
 The next one should have a stone directly accross from it. There is more than one stone? I remember it being pretty big, look for the biggest stone you can find.
-Lastly I remember this grave being the closest wooden grave to the grave across the last one I described.
+Now this last one I don't remember at all! I'm sure there is one more grave with loot in it. Find it and get out of there!
 We are all done here! Let's get going.[DONTAPPEND]
 Amazing work out there. You managed to disturb the slumber of so many of the dead.[CANSKIP]
 But what's that matter with all the treasure we've got?! Bravo![CANSKIP]

@@ -7,6 +7,7 @@
 #include "MainAnimInstance.generated.h"
 
 class AMainCharacter;
+class USoundBase;
 
 /**
  * 
@@ -39,5 +40,11 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Movement")
 	AMainCharacter* Main;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+	TArray<USoundBase*> StepSounds;
+
+	UFUNCTION(BlueprintPure)
+	USoundBase* GetRandomStepSound();
 	
 };

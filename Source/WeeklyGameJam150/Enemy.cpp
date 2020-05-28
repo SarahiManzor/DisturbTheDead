@@ -11,6 +11,7 @@
 #include "Grave.h"
 #include "Components/CapsuleComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "Sound/SoundBase.h"
 
 // Sets default values
 AEnemy::AEnemy()
@@ -51,6 +52,10 @@ void AEnemy::BeginPlay()
 	if (SpawnParticles)
 	{
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), SpawnParticles, GetActorLocation(), FRotator(0.0f));
+	}
+	if (SpawnSound)
+	{
+		UGameplayStatics::PlaySound2D(GetWorld(), SpawnSound, 0.25f);
 	}
 
 	SetActorScale3D(FVector::ZeroVector);
@@ -109,6 +114,10 @@ void AEnemy::Kill()
 	if (DeathParticles)
 	{
 		UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), DeathParticles, GetActorLocation(), FRotator(0.0f));
+	}
+	if (DeathSound)
+	{
+		UGameplayStatics::PlaySound2D(GetWorld(), DeathSound);
 	}
 }
 

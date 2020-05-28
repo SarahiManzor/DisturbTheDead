@@ -3,6 +3,7 @@
 
 #include "MainAnimInstance.h"
 #include "MainCharacter.h"
+#include "Math/UnrealMathUtility.h" 
 
 void UMainAnimInstance::NativeInitializeAnimation()
 {
@@ -38,4 +39,11 @@ void UMainAnimInstance::UpdateAnimationProperties()
 		bIsDigging = Main->GetIsDigging();
 		bIsAlive = Main->GetIsAlive();
 	}
+}
+
+USoundBase* UMainAnimInstance::GetRandomStepSound()
+{
+	int32 RandomIndex = FMath::RandRange(0, StepSounds.Num() - 1);
+	if (RandomIndex > StepSounds.Num() - 1 || RandomIndex < 0) return nullptr;
+	return StepSounds[RandomIndex];
 }

@@ -8,6 +8,7 @@
 
 class AMainCharacter;
 class AGrave;
+class USpawnSound;
 
 UCLASS()
 class WEEKLYGAMEJAM150_API AEnemy : public ACharacter
@@ -39,6 +40,12 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	UParticleSystem* DeathParticles;
+
+	UPROPERTY(EditAnywhere)
+	USoundBase* SpawnSound;
+
+	UPROPERTY(EditAnywhere)
+	USoundBase* DeathSound;
 
 	AMainCharacter* Player;
 

@@ -16,6 +16,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "WeeklyGameJam150GameModeBase.h"
 #include "Engine/TriggerBox.h"
+#include "Sound/SoundBase.h" 
 
 // Sets default values
 AMainCharacter::AMainCharacter()
@@ -79,6 +80,9 @@ void AMainCharacter::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 	if (!bGameComplete)
 		PlayTime += DeltaTime;
+
+	if (bCanSkip)
+		bCanDig = false;
 }
 
 // Called to bind functionality to input
@@ -144,6 +148,10 @@ void AMainCharacter::SelectObject()
 			}
 			if (Grave && DiggableGraves.Contains(Grave))
 			{
+				if (ShovelSound)
+				{
+					UGameplayStatics::PlaySound2D(GetWorld(), ShovelSound);
+				}
 				DiggableGraves.Remove(Grave);
 				UE_LOG(LogTemp, Warning, TEXT("Is diggable"));
 
@@ -190,6 +198,10 @@ void AMainCharacter::SelectObject()
 					{
 						UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), CorrectParticles, GetActorLocation(), FRotator(0.0f));
 					}
+					if (CorrectSound)
+					{
+						UGameplayStatics::PlaySound2D(GetWorld(), CorrectSound, 0.75f);
+					}
 				}
 				else if (IncorrectParticles)
 				{
@@ -229,6 +241,7 @@ void AMainCharacter::NextInstruction(bool Forced)
 		else
 		{
 			GameMode->NextInstruction();
+			bCanDig = true;
 		}
 
 		CurrentInstruction = GameMode->CurrentInstruction.Instruction;
@@ -301,6 +314,10 @@ void AMainCharacter::ActorBeginOverlap(AActor* OverlappedActor, AActor* OtherAct
 		GetWorld()->GetFirstPlayerController()->PlayerCameraManager->StartCameraFade(0.f, 1.f, 1.5f, FLinearColor::Black, false, true);
 		FTimerHandle TimerHandle;
 		GetWorld()->GetTimerManager().SetTimer(TimerHandle, this, &AMainCharacter::StartRestart, 2.f, false, 2.f);
+		if (DeathSound)
+		{
+			UGameplayStatics::PlaySound2D(GetWorld(), DeathSound);
+		}
 	}
 
 	ATriggerBox* TriggerBox = Cast<ATriggerBox>(OtherActor);

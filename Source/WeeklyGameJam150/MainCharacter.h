@@ -10,6 +10,7 @@ class AGrave;
 class AEnemy;
 class UParticleSystem;
 struct FInstruction;
+class USoundBase;
 
 UCLASS()
 class WEEKLYGAMEJAM150_API AMainCharacter : public ACharacter
@@ -53,6 +54,15 @@ private:
 
 	UPROPERTY(EditAnywhere)
 	UParticleSystem* IncorrectParticles;
+
+	UPROPERTY(EditAnywhere)
+	USoundBase* CorrectSound;
+
+	UPROPERTY(EditAnywhere)
+	USoundBase* ShovelSound;
+
+	UPROPERTY(EditAnywhere)
+	USoundBase* DeathSound;
 
 	// Movement speed in m/sec
 	UPROPERTY(EditAnywhere)
