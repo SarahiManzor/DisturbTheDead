@@ -251,8 +251,8 @@ void AMainCharacter::NextInstruction(bool Forced)
 
 	if (!bUpdated && bGotTreasure)
 	{
-		FString LuckyString1 = "You got lucky with that one! Let try to find the one I am referring to though. ";
-		FString LuckyString2 = "Another lucky hit! Still not the one I was referring to. ";
+		FString LuckyString1 = "You got lucky with that one! Let's try to find the one I am referring to though. ";
+		FString LuckyString2 = "Another lucky hit, but still not the one I was referring to! ";
 
 		if (CurrentInstruction.Contains(LuckyString1))
 		{

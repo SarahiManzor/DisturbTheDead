@@ -109,6 +109,9 @@ public:
 	UFUNCTION(BlueprintPure)
 	FORCEINLINE float GetPlayTime() { return PlayTime; }
 
+	UFUNCTION(BlueprintPure)
+	FORCEINLINE float GetDeaths() { return TotalDeaths; }
+
 protected:
 private:
 	void MoveForward(float AxisValue);

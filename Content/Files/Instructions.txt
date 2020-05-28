@@ -5,7 +5,7 @@ Okay. First grave we are looking for is the one belonging to an Edmond Cuff. Wai
 Edmond's grave should be the first on your left when you walk in.
 Second one is right next to the first.
 Last one should be directly accross the first one.
-Good work. Now move on to the next area. The sprits shouldn't be able to follow you in.[DONTAPPEND]
+Good work. Now move on to the next area. The spirits shouldn't be able to follow you in.[DONTAPPEND]
 Okay now I remember this grave being awful close to a tree, look for it.
 The next one should be the only wooden grave in the area.
 Last one should be the only other unique one in the area.
@@ -15,9 +15,9 @@ Count how many wooden graves there are. The next one should be that many graves 
 Now count how many stone graves there are. The next one should be that many graves away from the last grave I described.
 Well done! Now get out of there and into the next area![DONTAPPEND]
 Grave number one of this area is surrounded by 4 wooden graves in all 4 directions.
-The next one has a stone cross to its left, and wood grave to its right.
+The next one has a stone cross to its left, and a wood grave to its right.
 The last one only has round stone graves surrounding it.
-Good work. Now move on to the next area. The sprits shouldn't be able to follow you in.[DONTAPPEND]
+Good work. Now move on to the next area. The spirits shouldn't be able to follow you in.[DONTAPPEND]
 Okay, this area is a gold mine. Dig every grave you can get your hands on, they've all got treasure. Just make sure to order your digs carefully otherwise you'll get overrun!
 Nice! We are going to be rich!
 Three More! Try luring the spirits away before trying to dig!
@@ -28,10 +28,10 @@ I remember the first grave here being a wooden one that was behind a tree that h
 You're out at the same time I investigated the area, there should be a grave that falls directly in the shadow of a tree. Dig it up.
 Hmm I don't quite rememeber where this last one was... All I remember is that it was a round stone grave. Good luck!
 Great job finding that last one! Let's get moving now.[DONTAPPEND]
-The first grave should isolated away from the rest.
+The first grave should be isolated away from the rest.
 The next one should have a stone directly accross from it. There is more than one stone? I remember it being pretty big, look for the biggest stone you can find.
 Lastly I remember this grave being the closest wooden grave to the grave across the last one I described.
-We are all done here! Let get going.[DONTAPPEND]
+We are all done here! Let's get going.[DONTAPPEND]
 Amazing work out there. You managed to disturb the slumber of so many of the dead.[CANSKIP]
 But what's that matter with all the treasure we've got?! Bravo![CANSKIP]
 Now head on back and we can split the haul.
