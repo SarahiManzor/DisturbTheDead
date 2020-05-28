@@ -64,6 +64,8 @@ void AMainCharacter::BeginPlay()
 
 	TreasuresCollected.Init(false, 3);
 	NextInstruction(true);
+
+	GetWorld()->GetFirstPlayerController()->PlayerCameraManager->StartCameraFade(1.f, 0.f, 4.f, FLinearColor::Black);
 }
 
 // Called every frame
