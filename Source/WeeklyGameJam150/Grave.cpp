@@ -80,6 +80,7 @@ bool AGrave::Dig(AEnemy* &SpawnedEnemy)
 		return bHasTreasure;
 	}
 
+	SpawnedEnemy = nullptr;
 	return false;
 }
 
